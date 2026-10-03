@@ -1,10 +1,11 @@
+```python
 import streamlit as st
 import pandas as pd
 import numpy as np
 
 
 # ============================================================
-# CONFIGURACIÓN GENERAL DE LA APLICACIÓN
+# CONFIGURACIÓN DE LA APLICACIÓN
 # ============================================================
 
 st.set_page_config(
@@ -15,39 +16,28 @@ st.set_page_config(
 
 
 # ============================================================
-# TÍTULO PRINCIPAL
-# ============================================================
-
-st.title("⚽ FIFA World Cup 2026")
-st.subheader("Análisis Exploratorio de Datos de Rendimiento de Jugadores")
-
-st.markdown("---")
-
-
-# ============================================================
-# CLASE DE PROCESAMIENTO DE DATOS
+# CLASE DE ANÁLISIS
 # ============================================================
 
 class DataAnalyzer:
     """
-    Clase encargada de gestionar y procesar
-    el dataset de rendimiento de jugadores.
+    Clase encargada de gestionar el dataset
+    y preparar los datos para el análisis.
     """
 
     def __init__(self, dataframe):
         self.df = dataframe
 
     def obtener_dimensiones(self):
-        """Devuelve cantidad de filas y columnas."""
-        filas, columnas = self.df.shape
-        return filas, columnas
+        """Obtiene las dimensiones del dataset."""
+        return self.df.shape
 
     def obtener_nulos(self):
-        """Devuelve el conteo de valores nulos por columna."""
+        """Obtiene los valores nulos por columna."""
         return self.df.isnull().sum()
 
     def obtener_duplicados(self):
-        """Devuelve la cantidad de registros duplicados."""
+        """Obtiene la cantidad de registros duplicados."""
         return self.df.duplicated().sum()
 
     def clasificar_variables(self):
@@ -65,7 +55,17 @@ class DataAnalyzer:
 
 
 # ============================================================
-# SIDEBAR - MENÚ PRINCIPAL
+# TÍTULO PRINCIPAL
+# ============================================================
+
+st.title("⚽ FIFA World Cup 2026")
+st.subheader("Análisis Exploratorio de Datos de Rendimiento de Jugadores")
+
+st.markdown("---")
+
+
+# ============================================================
+# MENÚ LATERAL
 # ============================================================
 
 st.sidebar.title("📌 Menú principal")
@@ -81,7 +81,7 @@ opcion = st.sidebar.radio(
 
 
 # ============================================================
-# SIDEBAR - INFORMACIÓN DEL PROYECTO
+# INFORMACIÓN LATERAL
 # ============================================================
 
 st.sidebar.markdown("---")
@@ -111,9 +111,9 @@ if opcion == "🏠 Home":
         """
         ## FIFA World Cup 2026 – Player Performance
 
-        Este proyecto tiene como finalidad desarrollar un **Análisis
-        Exploratorio de Datos (EDA)** sobre el rendimiento de los
-        jugadores durante la FIFA World Cup 2026.
+        Este proyecto tiene como finalidad desarrollar un
+        **Análisis Exploratorio de Datos (EDA)** sobre el rendimiento
+        de los jugadores durante la FIFA World Cup 2026.
 
         El análisis permitirá explorar diferentes características
         técnicas, ofensivas, defensivas, físicas y contextuales
@@ -123,10 +123,7 @@ if opcion == "🏠 Home":
 
     st.markdown("---")
 
-    # --------------------------------------------------------
-    # INFORMACIÓN DEL AUTOR
-    # --------------------------------------------------------
-
+    # Información del autor
     st.subheader("👤 Datos del autor")
 
     col1, col2, col3 = st.columns(3)
@@ -145,10 +142,7 @@ if opcion == "🏠 Home":
 
     st.markdown("---")
 
-    # --------------------------------------------------------
-    # INFORMACIÓN DEL DATASET
-    # --------------------------------------------------------
-
+    # Información del dataset
     st.subheader("📊 Sobre el dataset")
 
     st.write(
@@ -157,9 +151,9 @@ if opcion == "🏠 Home":
         individual de jugadores durante partidos de la FIFA World Cup
         2026.
 
-        Cada registro representa la actuación de un jugador en un partido
-        e incluye información sobre selección, rival, estadio, fase del
-        torneo, resultado y diferentes métricas de rendimiento.
+        Cada registro representa la actuación de un jugador en un
+        partido e incluye información sobre selección, rival, estadio,
+        fase del torneo, resultado y diferentes métricas de rendimiento.
         """
     )
 
@@ -185,10 +179,7 @@ if opcion == "🏠 Home":
 
     st.markdown("---")
 
-    # --------------------------------------------------------
-    # TECNOLOGÍAS
-    # --------------------------------------------------------
-
+    # Tecnologías
     st.subheader("🛠️ Tecnologías utilizadas")
 
     col1, col2, col3, col4 = st.columns(4)
@@ -222,14 +213,11 @@ elif opcion == "📂 Carga del dataset":
     st.header("📂 Carga del dataset")
 
     st.write(
-        """
-        Antes de realizar cualquier análisis, debes cargar el archivo
-        CSV correspondiente al proyecto.
-        """
+        "Carga el archivo CSV para comenzar con el proyecto."
     )
 
     # --------------------------------------------------------
-    # CARGADOR DE ARCHIVO
+    # CARGA DEL ARCHIVO
     # --------------------------------------------------------
 
     archivo = st.file_uploader(
@@ -238,44 +226,45 @@ elif opcion == "📂 Carga del dataset":
     )
 
     # --------------------------------------------------------
-    # VALIDACIÓN DEL ARCHIVO
+    # VALIDACIÓN
     # --------------------------------------------------------
 
     if archivo is not None:
 
         try:
 
-            # Leer CSV
+            # Leer el archivo CSV
             df = pd.read_csv(archivo)
 
             # Crear objeto de la clase
             analyzer = DataAnalyzer(df)
 
+            # Confirmación de carga
             st.success(
-                f"✅ Archivo cargado correctamente: {archivo.name}"
+                "✅ El archivo fue cargado correctamente."
             )
 
             st.markdown("---")
 
             # ------------------------------------------------
-            # DIMENSIONES
+            # DIMENSIONES DEL DATASET
             # ------------------------------------------------
 
-            filas, columnas = analyzer.obtener_dimensiones()
-
             st.subheader("📐 Dimensiones del dataset")
+
+            filas, columnas = analyzer.obtener_dimensiones()
 
             col1, col2 = st.columns(2)
 
             with col1:
                 st.metric(
-                    "Número de filas",
+                    "Filas",
                     f"{filas:,}"
                 )
 
             with col2:
                 st.metric(
-                    "Número de columnas",
+                    "Columnas",
                     f"{columnas}"
                 )
 
@@ -296,52 +285,10 @@ elif opcion == "📂 Carga del dataset":
                 use_container_width=True
             )
 
-            st.markdown("---")
-
-            # ------------------------------------------------
-            # INFORMACIÓN BÁSICA
-            # ------------------------------------------------
-
-            st.subheader("📋 Información básica")
-
-            col1, col2 = st.columns(2)
-
-            with col1:
-
-                st.write("**Nombre del archivo:**")
-
-                st.code(
-                    archivo.name
-                )
-
-            with col2:
-
-                st.write("**Tamaño del dataset:**")
-
-                st.code(
-                    f"{filas:,} filas × {columnas} columnas"
-                )
-
-            # ------------------------------------------------
-            # VARIABLES DEL DATASET
-            # ------------------------------------------------
-
-            st.markdown("---")
-
-            st.subheader("📝 Variables disponibles")
-
-            st.write(
-                "Listado de las variables presentes en el dataset:"
-            )
-
-            st.write(
-                df.columns.tolist()
-            )
-
         except Exception as error:
 
             st.error(
-                "❌ Ocurrió un error al leer el archivo."
+                "❌ No fue posible cargar el archivo."
             )
 
             st.exception(error)
@@ -349,16 +296,7 @@ elif opcion == "📂 Carga del dataset":
     else:
 
         st.warning(
-            "⚠️ Debes cargar el archivo "
-            "`fifa_world_cup_2026_player_performance.csv` "
-            "para continuar."
-        )
-
-        st.info(
-            """
-            El análisis no se ejecutará hasta que el archivo
-            CSV haya sido cargado correctamente.
-            """
+            "⚠️ Primero debes cargar el archivo CSV."
         )
 
 
@@ -372,35 +310,43 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
 
     st.info(
         """
-        Para realizar el análisis exploratorio primero debes cargar
-        el dataset desde la sección **📂 Carga del dataset**.
+        Primero debemos cargar el dataset desde la sección
+        **📂 Carga del dataset**.
+
+        Los análisis serán desarrollados en los siguientes pasos.
         """
     )
 
     st.markdown("---")
 
-    st.subheader("🔎 Próximamente")
+    st.subheader("📋 Análisis que desarrollaremos")
 
     st.write(
         """
-        En esta sección construiremos los 10 análisis solicitados
-        en el caso de estudio:
+        **Ítem 1:** Información general del dataset
 
-        1. Información general del dataset.
-        2. Clasificación de variables.
-        3. Estadísticas descriptivas.
-        4. Análisis de valores faltantes.
-        5. Distribución de variables numéricas.
-        6. Análisis de variables categóricas.
-        7. Análisis bivariado numérico vs categórico.
-        8. Análisis bivariado categórico vs categórico.
-        9. Análisis mediante parámetros seleccionados.
-        10. Hallazgos clave.
+        **Ítem 2:** Clasificación de variables
+
+        **Ítem 3:** Estadísticas descriptivas
+
+        **Ítem 4:** Análisis de valores faltantes
+
+        **Ítem 5:** Distribución de variables numéricas
+
+        **Ítem 6:** Análisis de variables categóricas
+
+        **Ítem 7:** Análisis bivariado numérico vs categórico
+
+        **Ítem 8:** Análisis bivariado categórico vs categórico
+
+        **Ítem 9:** Análisis basado en parámetros seleccionados
+
+        **Ítem 10:** Hallazgos clave
         """
     )
 
     st.warning(
-        "Esta sección será desarrollada en los siguientes pasos del proyecto."
+        "Los análisis serán incorporados progresivamente."
     )
 
 
@@ -412,17 +358,6 @@ st.markdown("---")
 
 st.caption(
     "FIFA World Cup 2026 | Análisis Exploratorio de Datos | "
-    "Python for Analytics | Sebastián Ccala | 2026")
-# ------------------------------------------------
-# VARIABLES DEL DATASET
-# ------------------------------------------------
-
-st.markdown("---")
-
-st.subheader("📝 Variables disponibles")
-
-st.write(
-    "Listado de las variables presentes en el dataset:")
-
-st.write(
-    df.columns.tolist())
+    "Python for Analytics | Sebastián Ccala | 2026"
+)
+```
