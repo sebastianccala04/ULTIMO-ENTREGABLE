@@ -412,5 +412,17 @@ st.markdown("---")
 
 st.caption(
     "FIFA World Cup 2026 | Análisis Exploratorio de Datos | "
-    "Python for Analytics | Sebastián Ccala | 2026"
-)
+    "Python for Analytics | Sebastián Ccala | 2026")
+# ------------------------------------------------
+# VARIABLES DEL DATASET
+# ------------------------------------------------
+
+st.markdown("---")
+
+st.subheader("📝 Variables disponibles")
+
+st.write(
+    "Listado de las variables presentes en el dataset:")
+
+st.write(
+    df.columns.tolist())
