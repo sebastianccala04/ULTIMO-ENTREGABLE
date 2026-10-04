@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import io
 
 st.set_page_config(
     page_title="FIFA World Cup 2026 - EDA",
