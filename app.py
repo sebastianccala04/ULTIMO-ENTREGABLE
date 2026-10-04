@@ -129,43 +129,92 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
                 "📋 Información general",
                 "🔤 Tipos de datos",
                 "⚠️ Valores nulos",
-                "🔁 Duplicados"
-            ]
+                "🔁 Duplicados"])
+
+with tab1:
+
+    st.subheader("📋 Resumen general del dataset")
+
+    # Métricas principales
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.metric(
+            "📊 Registros",
+            f"{df.shape[0]:,}"
         )
 
-        with tab1:
-            buffer = io.StringIO()
-            df.info(buf=buffer)
+    with col2:
+        st.metric(
+            "📁 Variables",
+            df.shape[1]
+        )
 
-            st.text(buffer.getvalue())
+    with col3:
+        st.metric(
+            "⚠️ Valores nulos",
+            int(df.isnull().sum().sum())
+        )
 
-        with tab2:
-            tipos = pd.DataFrame({
-                "Variable": df.columns,
-                "Tipo de dato": df.dtypes.astype(str).values
-            })
+    with col4:
+        st.metric(
+            "🔁 Duplicados",
+            int(df.duplicated().sum())
+        )
 
-            st.dataframe(tipos, use_container_width=True)
+    st.markdown("---")
 
-        with tab3:
-            nulos = pd.DataFrame({
-                "Variable": df.columns,
-                "Valores nulos": df.isnull().sum().values
-            })
+    # Clasificación de variables
+    st.subheader("🔤 Clasificación de variables")
 
-            st.dataframe(nulos, use_container_width=True)
+    numericas = df.select_dtypes(
+        include=np.number
+    ).shape[1]
 
-        with tab4:
-            duplicados = df.duplicated().sum()
+    categoricas = df.select_dtypes(
+        exclude=np.number
+    ).shape[1]
 
-            st.metric(
-                "Registros duplicados",
-                duplicados
-            )
+    col1, col2 = st.columns(2)
 
-            if duplicados == 0:
-                st.success("✅ No existen registros duplicados.")
-            else:
-                st.warning(
-                    f"⚠️ Se encontraron {duplicados} registros duplicados."
-                )
+    with col1:
+        st.metric(
+            "🔢 Variables numéricas",
+            numericas
+        )
+
+    with col2:
+        st.metric(
+            "🔤 Variables categóricas",
+            categoricas
+        )
+
+    st.markdown("---")
+
+    # Tabla resumen
+    st.subheader("📑 Resumen de estructura")
+
+    resumen = pd.DataFrame({
+        "Indicador": [
+            "Número de registros",
+            "Número de variables",
+            "Variables numéricas",
+            "Variables categóricas",
+            "Valores nulos",
+            "Registros duplicados"
+        ],
+        "Resultado": [
+            f"{df.shape[0]:,}",
+            df.shape[1],
+            numericas,
+            categoricas,
+            int(df.isnull().sum().sum()),
+            int(df.duplicated().sum())
+        ]
+    })
+
+    st.dataframe(
+        resumen,
+        use_container_width=True,
+        hide_index=True
+    )
