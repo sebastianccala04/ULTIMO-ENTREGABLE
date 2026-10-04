@@ -358,7 +358,6 @@ st.markdown("---")
 st.caption(
     "FIFA World Cup 2026 | Análisis Exploratorio de Datos | "
     "Python for Analytics | Sebastián Ccala | 2026")
-```python
 elif opcion == "📊 Análisis Exploratorio (EDA)":
 
     st.header("📊 Ítem 1: Información general del dataset")
