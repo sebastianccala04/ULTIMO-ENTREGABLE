@@ -32,6 +32,10 @@ class DataAnalyzer:
     def obtener_duplicados(self):
         return self.df.duplicated().sum()
 
+    # -----------------------------------------------------
+    # FUNCIÓN PERSONALIZADA - CLASIFICACIÓN DE VARIABLES
+    # -----------------------------------------------------
+
     def clasificar_variables(self):
 
         numericas = self.df.select_dtypes(
@@ -62,7 +66,8 @@ opcion = st.sidebar.radio(
     [
         "🏠 Home",
         "📂 Carga del dataset",
-        "📊 Análisis Exploratorio (EDA)"
+        "📊 Análisis Exploratorio (EDA)",
+        "🧮 Clasificación de variables"
     ]
 )
 
@@ -152,10 +157,8 @@ elif opcion == "📂 Carga del dataset":
 
         try:
 
-            # Leer CSV
             df = pd.read_csv(archivo)
 
-            # Guardar en session_state
             st.session_state.df = df
 
             st.success(
@@ -164,7 +167,6 @@ elif opcion == "📂 Carga del dataset":
 
             st.markdown("---")
 
-            # Métricas
             col1, col2, col3 = st.columns(3)
 
             with col1:
@@ -190,7 +192,6 @@ elif opcion == "📂 Carga del dataset":
 
             st.markdown("---")
 
-            # Primeros registros
             st.subheader(
                 "👀 Primeros registros"
             )
@@ -223,10 +224,6 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
         "📊 Análisis Exploratorio de Datos"
     )
 
-    # -----------------------------------------------------
-    # VERIFICAR SI EXISTE DATASET
-    # -----------------------------------------------------
-
     if st.session_state.df is None:
 
         st.warning(
@@ -236,26 +233,11 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
 
         st.stop()
 
-
-    # -----------------------------------------------------
-    # OBTENER DATAFRAME
-    # -----------------------------------------------------
-
     df = st.session_state.df
-
-
-    # -----------------------------------------------------
-    # TÍTULO DEL ÍTEM
-    # -----------------------------------------------------
 
     st.subheader(
         "Ítem 1: Información general del dataset"
     )
-
-
-    # =====================================================
-    # PESTAÑAS
-    # =====================================================
 
     tab1, tab2, tab3, tab4 = st.tabs(
         [
@@ -266,9 +248,8 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
         ]
     )
 
-
     # =====================================================
-    # TAB 1 - INFORMACIÓN GENERAL
+    # TAB 1
     # =====================================================
 
     with tab1:
@@ -276,10 +257,6 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
         st.markdown(
             "### 📋 Resumen general del dataset"
         )
-
-        # -------------------------------------------------
-        # MÉTRICAS PRINCIPALES
-        # -------------------------------------------------
 
         col1, col2, col3, col4 = st.columns(4)
 
@@ -319,13 +296,7 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
                 total_duplicados
             )
 
-
         st.markdown("---")
-
-
-        # -------------------------------------------------
-        # CLASIFICACIÓN DE VARIABLES
-        # -------------------------------------------------
 
         st.markdown(
             "### 🔤 Clasificación de variables"
@@ -355,13 +326,7 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
                 categoricas
             )
 
-
         st.markdown("---")
-
-
-        # -------------------------------------------------
-        # TABLA RESUMEN
-        # -------------------------------------------------
 
         st.markdown(
             "### 📑 Resumen de estructura"
@@ -397,7 +362,7 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
 
 
     # =====================================================
-    # TAB 2 - TIPOS DE DATOS
+    # TAB 2
     # =====================================================
 
     with tab2:
@@ -409,9 +374,7 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
         tipos = pd.DataFrame(
             {
                 "N°": range(1, len(df.columns) + 1),
-
                 "Variable": df.columns,
-
                 "Tipo de dato": (
                     df.dtypes.astype(str).values
                 )
@@ -423,9 +386,6 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
             use_container_width=True,
             hide_index=True
         )
-
-
-        # Resumen de tipos
 
         st.markdown("---")
 
@@ -453,7 +413,7 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
 
 
     # =====================================================
-    # TAB 3 - VALORES NULOS
+    # TAB 3
     # =====================================================
 
     with tab3:
@@ -479,11 +439,7 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
                 f"{total_nulos:,} valores nulos."
             )
 
-
         st.markdown("---")
-
-
-        # Tabla de valores nulos
 
         nulos = pd.DataFrame(
             {
@@ -495,15 +451,11 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
             }
         )
 
-
-        # Porcentaje de nulos
-
         nulos["Porcentaje nulos (%)"] = (
             nulos["Valores nulos"]
             / len(df)
             * 100
         ).round(2)
-
 
         st.dataframe(
             nulos,
@@ -513,7 +465,7 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
 
 
     # =====================================================
-    # TAB 4 - DUPLICADOS
+    # TAB 4
     # =====================================================
 
     with tab4:
@@ -530,7 +482,6 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
             "Registros duplicados",
             duplicados
         )
-
 
         if duplicados == 0:
 
@@ -559,3 +510,191 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
                 df_duplicados,
                 use_container_width=True
             )
+
+
+# =========================================================
+# ÍTEM 2 - CLASIFICACIÓN DE VARIABLES
+# =========================================================
+
+elif opcion == "🧮 Clasificación de variables":
+
+    st.header(
+        "🧮 Ítem 2: Clasificación de variables"
+    )
+
+    # -----------------------------------------------------
+    # VERIFICAR DATASET
+    # -----------------------------------------------------
+
+    if st.session_state.df is None:
+
+        st.warning(
+            "⚠️ Primero debes cargar el archivo desde "
+            "📂 Carga del dataset."
+        )
+
+        st.stop()
+
+
+    # -----------------------------------------------------
+    # CREAR OBJETO DE LA CLASE
+    # -----------------------------------------------------
+
+    df = st.session_state.df
+
+    analizador = DataAnalyzer(df)
+
+
+    # -----------------------------------------------------
+    # UTILIZAR FUNCIÓN PERSONALIZADA
+    # -----------------------------------------------------
+
+    numericas, categoricas = (
+        analizador.clasificar_variables()
+    )
+
+
+    # -----------------------------------------------------
+    # CONTEO
+    # -----------------------------------------------------
+
+    cantidad_numericas = len(numericas)
+
+    cantidad_categoricas = len(categoricas)
+
+
+    # -----------------------------------------------------
+    # DESCRIPCIÓN
+    # -----------------------------------------------------
+
+    st.write(
+        "Las variables del dataset se clasifican en "
+        "numéricas y categóricas utilizando una "
+        "función personalizada desarrollada mediante "
+        "la clase DataAnalyzer."
+    )
+
+    st.markdown("---")
+
+
+    # =====================================================
+    # CONTEO DE VARIABLES
+    # =====================================================
+
+    st.subheader(
+        "📊 Conteo de variables por tipo"
+    )
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+
+        st.metric(
+            "🔢 Variables numéricas",
+            cantidad_numericas
+        )
+
+    with col2:
+
+        st.metric(
+            "🔤 Variables categóricas",
+            cantidad_categoricas
+        )
+
+    with col3:
+
+        st.metric(
+            "📁 Total de variables",
+            cantidad_numericas
+            + cantidad_categoricas
+        )
+
+
+    st.markdown("---")
+
+
+    # =====================================================
+    # TABLA DE CONTEO
+    # =====================================================
+
+    st.subheader(
+        "📋 Resumen de clasificación"
+    )
+
+    resumen_clasificacion = pd.DataFrame(
+        {
+            "Tipo de variable": [
+                "Numéricas",
+                "Categóricas"
+            ],
+
+            "Cantidad": [
+                cantidad_numericas,
+                cantidad_categoricas
+            ]
+        }
+    )
+
+    st.dataframe(
+        resumen_clasificacion,
+        use_container_width=True,
+        hide_index=True
+    )
+
+
+    st.markdown("---")
+
+
+    # =====================================================
+    # VARIABLES NUMÉRICAS
+    # =====================================================
+
+    st.subheader(
+        "🔢 Variables numéricas"
+    )
+
+    df_numericas = pd.DataFrame(
+        {
+            "N°": range(
+                1,
+                cantidad_numericas + 1
+            ),
+
+            "Variable": numericas
+        }
+    )
+
+    st.dataframe(
+        df_numericas,
+        use_container_width=True,
+        hide_index=True
+    )
+
+
+    st.markdown("---")
+
+
+    # =====================================================
+    # VARIABLES CATEGÓRICAS
+    # =====================================================
+
+    st.subheader(
+        "🔤 Variables categóricas"
+    )
+
+    df_categoricas = pd.DataFrame(
+        {
+            "N°": range(
+                1,
+                cantidad_categoricas + 1
+            ),
+
+            "Variable": categoricas
+        }
+    )
+
+    st.dataframe(
+        df_categoricas,
+        use_container_width=True,
+        hide_index=True
+    )
