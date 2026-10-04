@@ -355,8 +355,7 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
 
 st.markdown("---")
 
-st.caption(
-    "FIFA World Cup 2026 | Análisis Exploratorio de Datos | "
+st.caption("FIFA World Cup 2026 | Análisis Exploratorio de Datos | "
     "Python for Analytics | Sebastián Ccala | 2026")
 
 elif opcion == "📊 Análisis Exploratorio (EDA)":
@@ -365,8 +364,7 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
 
     archivo = st.file_uploader(
         "Carga el archivo CSV:",
-        type=["csv"]
-    )
+        type=["csv"])
 
     if archivo is not None:
 
