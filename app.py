@@ -358,3 +358,108 @@ st.markdown("---")
 st.caption(
     "FIFA World Cup 2026 | Análisis Exploratorio de Datos | "
     "Python for Analytics | Sebastián Ccala | 2026")
+```python
+elif opcion == "📊 Análisis Exploratorio (EDA)":
+
+    st.header("📊 Ítem 1: Información general del dataset")
+
+    archivo = st.file_uploader(
+        "Carga el archivo CSV:",
+        type=["csv"]
+    )
+
+    if archivo is not None:
+
+        df = pd.read_csv(archivo)
+
+        st.success("✅ Dataset cargado correctamente.")
+
+        tab1, tab2, tab3, tab4 = st.tabs([
+            "📋 Información general",
+            "🔤 Tipos de datos",
+            "⚠️ Valores nulos",
+            "🔁 Duplicados"
+        ])
+
+        with tab1:
+            st.subheader("📋 Información general")
+
+            col1, col2 = st.columns(2)
+
+            with col1:
+                st.metric("Filas", f"{df.shape[0]:,}")
+
+            with col2:
+                st.metric("Columnas", df.shape[1])
+
+            info = pd.DataFrame({
+                "Variable": df.columns,
+                "Tipo de dato": df.dtypes.astype(str),
+                "Valores no nulos": df.notna().sum(),
+                "Valores nulos": df.isnull().sum()
+            })
+
+            st.dataframe(
+                info,
+                use_container_width=True,
+                hide_index=True
+            )
+
+        with tab2:
+            st.subheader("🔤 Tipos de datos")
+
+            tipos = pd.DataFrame({
+                "Variable": df.columns,
+                "Tipo de dato": df.dtypes.astype(str)
+            })
+
+            st.dataframe(
+                tipos,
+                use_container_width=True,
+                hide_index=True
+            )
+
+        with tab3:
+            st.subheader("⚠️ Conteo de valores nulos")
+
+            nulos = df.isnull().sum()
+
+            nulos_df = pd.DataFrame({
+                "Variable": nulos.index,
+                "Valores nulos": nulos.values
+            })
+
+            st.dataframe(
+                nulos_df,
+                use_container_width=True,
+                hide_index=True
+            )
+
+            if nulos.sum() == 0:
+                st.success("✅ No existen valores nulos en el dataset.")
+            else:
+                st.warning(
+                    f"⚠️ Se encontraron {nulos.sum():,} valores nulos."
+                )
+
+        with tab4:
+            st.subheader("🔁 Identificación de registros duplicados")
+
+            duplicados = df.duplicated().sum()
+
+            st.metric(
+                "Registros duplicados",
+                f"{duplicados:,}"
+            )
+
+            if duplicados == 0:
+                st.success("✅ No existen registros duplicados.")
+            else:
+                st.warning(
+                    f"⚠️ Se encontraron {duplicados:,} registros duplicados."
+                )
+
+    else:
+        st.warning(
+            "⚠️ Debes cargar el archivo CSV para realizar el análisis."
+        )
