@@ -33,7 +33,7 @@ class DataAnalyzer:
         return self.df.duplicated().sum()
 
     # -----------------------------------------------------
-    # FUNCIÓN PERSONALIZADA - CLASIFICACIÓN DE VARIABLES
+    # ÍTEM 2 - CLASIFICACIÓN DE VARIABLES
     # -----------------------------------------------------
 
     def clasificar_variables(self):
@@ -47,6 +47,14 @@ class DataAnalyzer:
         ).columns.tolist()
 
         return numericas, categoricas
+
+    # -----------------------------------------------------
+    # ÍTEM 3 - ESTADÍSTICAS DESCRIPTIVAS
+    # -----------------------------------------------------
+
+    def estadisticas_descriptivas(self):
+
+        return self.df.describe()
 
 
 # =========================================================
@@ -67,7 +75,8 @@ opcion = st.sidebar.radio(
         "🏠 Home",
         "📂 Carga del dataset",
         "📊 Análisis Exploratorio (EDA)",
-        "🧮 Clasificación de variables"
+        "🧮 Clasificación de variables",
+        "📈 Estadísticas descriptivas"
     ]
 )
 
@@ -215,7 +224,7 @@ elif opcion == "📂 Carga del dataset":
 
 
 # =========================================================
-# ANÁLISIS EXPLORATORIO
+# ÍTEM 1 - ANÁLISIS EXPLORATORIO
 # =========================================================
 
 elif opcion == "📊 Análisis Exploratorio (EDA)":
@@ -298,10 +307,6 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
 
         st.markdown("---")
 
-        st.markdown(
-            "### 🔤 Clasificación de variables"
-        )
-
         numericas = df.select_dtypes(
             include=np.number
         ).shape[1]
@@ -309,6 +314,10 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
         categoricas = df.select_dtypes(
             exclude=np.number
         ).shape[1]
+
+        st.markdown(
+            "### 🔤 Clasificación de variables"
+        )
 
         col1, col2 = st.columns(2)
 
@@ -327,10 +336,6 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
             )
 
         st.markdown("---")
-
-        st.markdown(
-            "### 📑 Resumen de estructura"
-        )
 
         resumen = pd.DataFrame(
             {
@@ -389,10 +394,6 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
 
         st.markdown("---")
 
-        st.markdown(
-            "### 📊 Resumen por tipo de dato"
-        )
-
         resumen_tipos = (
             df.dtypes
             .astype(str)
@@ -444,7 +445,6 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
         nulos = pd.DataFrame(
             {
                 "Variable": df.columns,
-
                 "Valores nulos": (
                     df.isnull().sum().values
                 )
@@ -496,12 +496,6 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
                 f"{duplicados:,} registros duplicados."
             )
 
-            st.markdown("---")
-
-            st.subheader(
-                "Registros duplicados"
-            )
-
             df_duplicados = df[
                 df.duplicated(keep=False)
             ]
@@ -522,10 +516,6 @@ elif opcion == "🧮 Clasificación de variables":
         "🧮 Ítem 2: Clasificación de variables"
     )
 
-    # -----------------------------------------------------
-    # VERIFICAR DATASET
-    # -----------------------------------------------------
-
     if st.session_state.df is None:
 
         st.warning(
@@ -535,51 +525,24 @@ elif opcion == "🧮 Clasificación de variables":
 
         st.stop()
 
-
-    # -----------------------------------------------------
-    # CREAR OBJETO DE LA CLASE
-    # -----------------------------------------------------
-
     df = st.session_state.df
 
     analizador = DataAnalyzer(df)
-
-
-    # -----------------------------------------------------
-    # UTILIZAR FUNCIÓN PERSONALIZADA
-    # -----------------------------------------------------
 
     numericas, categoricas = (
         analizador.clasificar_variables()
     )
 
-
-    # -----------------------------------------------------
-    # CONTEO
-    # -----------------------------------------------------
-
     cantidad_numericas = len(numericas)
-
     cantidad_categoricas = len(categoricas)
-
-
-    # -----------------------------------------------------
-    # DESCRIPCIÓN
-    # -----------------------------------------------------
 
     st.write(
         "Las variables del dataset se clasifican en "
-        "numéricas y categóricas utilizando una "
-        "función personalizada desarrollada mediante "
-        "la clase DataAnalyzer."
+        "numéricas y categóricas mediante una función "
+        "personalizada."
     )
 
     st.markdown("---")
-
-
-    # =====================================================
-    # CONTEO DE VARIABLES
-    # =====================================================
 
     st.subheader(
         "📊 Conteo de variables por tipo"
@@ -609,13 +572,7 @@ elif opcion == "🧮 Clasificación de variables":
             + cantidad_categoricas
         )
 
-
     st.markdown("---")
-
-
-    # =====================================================
-    # TABLA DE CONTEO
-    # =====================================================
 
     st.subheader(
         "📋 Resumen de clasificación"
@@ -641,13 +598,7 @@ elif opcion == "🧮 Clasificación de variables":
         hide_index=True
     )
 
-
     st.markdown("---")
-
-
-    # =====================================================
-    # VARIABLES NUMÉRICAS
-    # =====================================================
 
     st.subheader(
         "🔢 Variables numéricas"
@@ -670,13 +621,7 @@ elif opcion == "🧮 Clasificación de variables":
         hide_index=True
     )
 
-
     st.markdown("---")
-
-
-    # =====================================================
-    # VARIABLES CATEGÓRICAS
-    # =====================================================
 
     st.subheader(
         "🔤 Variables categóricas"
@@ -697,4 +642,273 @@ elif opcion == "🧮 Clasificación de variables":
         df_categoricas,
         use_container_width=True,
         hide_index=True
+    )
+
+
+# =========================================================
+# ÍTEM 3 - ESTADÍSTICAS DESCRIPTIVAS
+# =========================================================
+
+elif opcion == "📈 Estadísticas descriptivas":
+
+    st.header(
+        "📈 Ítem 3: Estadísticas descriptivas"
+    )
+
+    if st.session_state.df is None:
+
+        st.warning(
+            "⚠️ Primero debes cargar el archivo desde "
+            "📂 Carga del dataset."
+        )
+
+        st.stop()
+
+    df = st.session_state.df
+
+    analizador = DataAnalyzer(df)
+
+    # -----------------------------------------------------
+    # OBTENER VARIABLES NUMÉRICAS
+    # -----------------------------------------------------
+
+    numericas, _ = analizador.clasificar_variables()
+
+    # -----------------------------------------------------
+    # USO DE .describe()
+    # -----------------------------------------------------
+
+    estadisticas = (
+        analizador.estadisticas_descriptivas()
+    )
+
+    st.subheader(
+        "📊 Estadísticas descriptivas del dataset"
+    )
+
+    st.write(
+        "La función `.describe()` permite obtener "
+        "un resumen estadístico de las variables "
+        "numéricas del dataset."
+    )
+
+    st.dataframe(
+        estadisticas.round(2),
+        use_container_width=True
+    )
+
+    st.markdown("---")
+
+    # =====================================================
+    # ANÁLISIS DE UNA VARIABLE
+    # =====================================================
+
+    st.subheader(
+        "🔎 Análisis detallado de una variable"
+    )
+
+    variable = st.selectbox(
+        "Selecciona una variable numérica:",
+        numericas
+    )
+
+    datos = df[variable].dropna()
+
+    # -----------------------------------------------------
+    # ESTADÍSTICAS
+    # -----------------------------------------------------
+
+    media = datos.mean()
+    mediana = datos.median()
+    minimo = datos.min()
+    maximo = datos.max()
+    desviacion = datos.std()
+
+    q1 = datos.quantile(0.25)
+    q3 = datos.quantile(0.75)
+
+    iqr = q3 - q1
+
+    limite_inferior = q1 - 1.5 * iqr
+    limite_superior = q3 + 1.5 * iqr
+
+    valores_extremos = datos[
+        (datos < limite_inferior)
+        | (datos > limite_superior)
+    ]
+
+    # =====================================================
+    # MÉTRICAS
+    # =====================================================
+
+    st.markdown(
+        "### 📌 Medidas principales"
+    )
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+
+        st.metric(
+            "Media",
+            f"{media:.2f}"
+        )
+
+    with col2:
+
+        st.metric(
+            "Mediana",
+            f"{mediana:.2f}"
+        )
+
+    with col3:
+
+        st.metric(
+            "Mínimo",
+            f"{minimo:.2f}"
+        )
+
+    with col4:
+
+        st.metric(
+            "Máximo",
+            f"{maximo:.2f}"
+        )
+
+    st.markdown("---")
+
+    # =====================================================
+    # CUARTILES Y DISPERSIÓN
+    # =====================================================
+
+    st.markdown(
+        "### 📐 Cuartiles y dispersión"
+    )
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+
+        st.metric(
+            "Q1 (25%)",
+            f"{q1:.2f}"
+        )
+
+    with col2:
+
+        st.metric(
+            "Q3 (75%)",
+            f"{q3:.2f}"
+        )
+
+    with col3:
+
+        st.metric(
+            "Rango intercuartílico",
+            f"{iqr:.2f}"
+        )
+
+    with col4:
+
+        st.metric(
+            "Desviación estándar",
+            f"{desviacion:.2f}"
+        )
+
+    st.markdown("---")
+
+    # =====================================================
+    # DETECCIÓN DE VALORES EXTREMOS
+    # =====================================================
+
+    st.markdown(
+        "### ⚠️ Detección preliminar de valores extremos"
+    )
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+
+        st.metric(
+            "Límite inferior",
+            f"{limite_inferior:.2f}"
+        )
+
+    with col2:
+
+        st.metric(
+            "Límite superior",
+            f"{limite_superior:.2f}"
+        )
+
+    with col3:
+
+        st.metric(
+            "Valores extremos",
+            len(valores_extremos)
+        )
+
+    if len(valores_extremos) == 0:
+
+        st.success(
+            "✅ No se detectaron valores extremos "
+            "mediante el criterio del rango intercuartílico."
+        )
+
+    else:
+
+        st.warning(
+            f"⚠️ Se detectaron "
+            f"{len(valores_extremos):,} valores extremos "
+            f"de manera preliminar."
+        )
+
+        st.dataframe(
+            valores_extremos.to_frame(
+                name=variable
+            ),
+            use_container_width=True
+        )
+
+    st.markdown("---")
+
+    # =====================================================
+    # INTERPRETACIÓN BÁSICA
+    # =====================================================
+
+    st.subheader(
+        "📝 Interpretación básica"
+    )
+
+    if media > mediana:
+
+        interpretacion_central = (
+            "La media es mayor que la mediana, "
+            "lo que puede indicar una ligera "
+            "asimetría hacia valores altos."
+        )
+
+    elif media < mediana:
+
+        interpretacion_central = (
+            "La media es menor que la mediana, "
+            "lo que puede indicar una ligera "
+            "asimetría hacia valores bajos."
+        )
+
+    else:
+
+        interpretacion_central = (
+            "La media y la mediana son iguales "
+            "o muy similares, lo que sugiere una "
+            "distribución relativamente equilibrada."
+        )
+
+    st.info(
+        f"**Media:** {media:.2f}\n\n"
+        f"**Mediana:** {mediana:.2f}\n\n"
+        f"**Q1:** {q1:.2f}\n\n"
+        f"**Q3:** {q3:.2f}\n\n"
+        f"**Desviación estándar:** {desviacion:.2f}\n\n"
+        f"**Interpretación:** {interpretacion_central}"
     )
