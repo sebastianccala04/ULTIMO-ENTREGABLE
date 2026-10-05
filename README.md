@@ -24,28 +24,9 @@ El proyecto integra las siguientes herramientas y tecnologías:
 ## 🖥️ Capturas de la aplicación
 
 ### Página principal
-<img width="1297" height="786" alt="image" src="https://github.com/user-attachments/assets/1eef63b6-4a42-4309-8ee1-979dc15d7bee" />
 
+<img width="1917" height="1078" alt="image" src="https://github.com/user-attachments/assets/bc37fde1-1b11-45d9-b8bd-05171fbf1ab0" />
 
-### Análisis exploratorio de datos
-
-> 📸 Coloca aquí una captura de pantalla de la sección de análisis exploratorio.
-
-![Análisis exploratorio](captura_eda.png)
-
-### Análisis bivariado
-
-> 📸 Coloca aquí una captura de la sección de análisis bivariado.
-
-![Análisis bivariado](captura_bivariado.png)
-
-### Análisis mediante parámetros seleccionados
-
-> 📸 Coloca aquí una captura de los filtros dinámicos.
-
-![Filtros dinámicos](captura_filtros.png)
-
----
 
 ## 🚀 Instrucciones de ejecución
 
