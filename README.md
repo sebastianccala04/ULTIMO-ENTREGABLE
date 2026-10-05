@@ -30,23 +30,26 @@ El proyecto integra las siguientes herramientas y tecnologías:
 
 ## 🚀 Instrucciones de ejecución
 
-### 1. Clonar el repositorio
+### 1. Realizar el repositorio
 
-Clonar el repositorio desde GitHub:
 https://github.com/sebastianccala04/ULTIMO-ENTREGABLE
 
-Ingresar a la carpeta del proyecto:
+A su vez debemos de cargar la base de datos:
+
 fifa_world_cup_2026_player_performance
 
 ### 2. Instalar las dependencias
 
-Instalar las librerías necesarias
+Instalar las librerías necesarias estas son:
+*Pandas 
+*NumPy 
+*Matplotlib
+*Seaborn
 
 ### 3. Ejecutar la aplicación
 
 Ejecutar el archivo principal de Streamlit:
 https://ultimoproyectodmc.streamlit.app/
-La aplicación se abrirá automáticamente en el navegador.
 
 ## 📊 Variables principales del dataset
 
