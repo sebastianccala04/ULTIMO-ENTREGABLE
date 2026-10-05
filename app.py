@@ -75,7 +75,10 @@ opcion = st.sidebar.radio(
         "⚠️ Análisis de valores faltantes",
         "📊 Distribución de variables numéricas",
         "🔤 Análisis de variables categóricas",
-        "📊 Análisis bivariado"
+        "📊 Análisis bivariado",
+        "🔤 Bivariado categórico",
+        "🎛️ Análisis por parámetros",
+        "💡 Hallazgos clave"
     ]
 )
 
@@ -99,22 +102,13 @@ if opcion == "🏠 Home":
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.metric(
-            "Registros",
-            "54,600"
-        )
+        st.metric("Registros", "54,600")
 
     with col2:
-        st.metric(
-            "Variables",
-            "75"
-        )
+        st.metric("Variables", "75")
 
     with col3:
-        st.metric(
-            "Año",
-            "2026"
-        )
+        st.metric("Año", "2026")
 
     st.markdown("---")
 
@@ -130,7 +124,9 @@ if opcion == "🏠 Home":
     with col2:
         st.write("**Lenguaje:** Python")
         st.write("**Framework:** Streamlit")
-        st.write("**Librerías:** Pandas, NumPy, Matplotlib y Seaborn")
+        st.write(
+            "**Librerías:** Pandas, NumPy, Matplotlib y Seaborn"
+        )
 
     st.markdown("---")
 
@@ -154,8 +150,8 @@ elif opcion == "📂 Carga del dataset":
     st.header("📂 Carga del dataset")
 
     st.write(
-        "Selecciona el archivo CSV que contiene la información de los "
-        "jugadores y partidos."
+        "Selecciona el archivo CSV que contiene la información "
+        "de los jugadores y partidos."
     )
 
     archivo = st.file_uploader(
@@ -194,7 +190,9 @@ elif opcion == "📂 Carga del dataset":
             with col3:
                 st.metric(
                     "Valores faltantes",
-                    int(df_cargado.isnull().sum().sum())
+                    int(
+                        df_cargado.isnull().sum().sum()
+                    )
                 )
 
             st.subheader("👀 Vista previa")
@@ -212,7 +210,7 @@ elif opcion == "📂 Carga del dataset":
 
 
 # ============================================================
-# VERIFICACIÓN DEL DATASET
+# RESTO DE SECCIONES
 # ============================================================
 
 else:
@@ -232,12 +230,14 @@ else:
 
 
     # ========================================================
-    # ÍTEM 1 - INFORMACIÓN GENERAL
+    # ÍTEM 1
     # ========================================================
 
     if opcion == "📊 Análisis Exploratorio (EDA)":
 
-        st.header("📊 Ítem 1: Información general del dataset")
+        st.header(
+            "📊 Ítem 1: Información general del dataset"
+        )
 
         filas, columnas = analyzer.obtener_dimensiones()
 
@@ -250,10 +250,6 @@ else:
         variables_numericas, variables_categoricas = (
             analyzer.clasificar_variables()
         )
-
-        # ----------------------------------------------------
-        # MÉTRICAS
-        # ----------------------------------------------------
 
         col1, col2, col3, col4 = st.columns(4)
 
@@ -299,10 +295,6 @@ else:
 
         st.markdown("---")
 
-        # ----------------------------------------------------
-        # TABS
-        # ----------------------------------------------------
-
         tab1, tab2, tab3, tab4 = st.tabs(
             [
                 "📋 Información general",
@@ -313,8 +305,6 @@ else:
         )
 
         with tab1:
-
-            st.subheader("Información general")
 
             resumen = pd.DataFrame(
                 {
@@ -345,8 +335,6 @@ else:
 
         with tab2:
 
-            st.subheader("Tipos de datos")
-
             tipos = pd.DataFrame(
                 {
                     "Variable": df.columns,
@@ -361,8 +349,6 @@ else:
             )
 
         with tab3:
-
-            st.subheader("Valores faltantes por variable")
 
             nulos = df.isnull().sum()
 
@@ -386,8 +372,6 @@ else:
 
         with tab4:
 
-            st.subheader("Registros duplicados")
-
             st.metric(
                 "Cantidad de duplicados",
                 duplicados
@@ -407,20 +391,18 @@ else:
 
 
     # ========================================================
-    # ÍTEM 2 - CLASIFICACIÓN DE VARIABLES
+    # ÍTEM 2
     # ========================================================
 
     elif opcion == "🧮 Clasificación de variables":
 
-        st.header("🧮 Ítem 2: Clasificación de variables")
+        st.header(
+            "🧮 Ítem 2: Clasificación de variables"
+        )
 
         variables_numericas, variables_categoricas = (
             analyzer.clasificar_variables()
         )
-
-        # ----------------------------------------------------
-        # MÉTRICAS
-        # ----------------------------------------------------
 
         col1, col2, col3 = st.columns(3)
 
@@ -444,10 +426,6 @@ else:
 
         st.markdown("---")
 
-        # ----------------------------------------------------
-        # RESUMEN
-        # ----------------------------------------------------
-
         resumen_variables = pd.DataFrame(
             {
                 "Tipo de variable": [
@@ -469,10 +447,6 @@ else:
             hide_index=True
         )
 
-        # ----------------------------------------------------
-        # NUMÉRICAS
-        # ----------------------------------------------------
-
         st.subheader("🔢 Variables numéricas")
 
         tabla_numericas = pd.DataFrame(
@@ -486,10 +460,6 @@ else:
             use_container_width=True,
             hide_index=True
         )
-
-        # ----------------------------------------------------
-        # CATEGÓRICAS
-        # ----------------------------------------------------
 
         st.subheader("🔤 Variables categóricas")
 
@@ -505,30 +475,16 @@ else:
             hide_index=True
         )
 
-        st.info(
-            "Las variables numéricas representan cantidades o medidas "
-            "que pueden utilizarse para cálculos estadísticos. Las "
-            "variables categóricas representan grupos, etiquetas o "
-            "características cualitativas."
-        )
-
 
     # ========================================================
-    # ÍTEM 3 - ESTADÍSTICAS DESCRIPTIVAS
+    # ÍTEM 3
     # ========================================================
 
     elif opcion == "📈 Estadísticas descriptivas":
 
-        st.header("📈 Ítem 3: Estadísticas descriptivas")
-
-        st.write(
-            "Las estadísticas descriptivas permiten resumir el "
-            "comportamiento de las variables numéricas."
+        st.header(
+            "📈 Ítem 3: Estadísticas descriptivas"
         )
-
-        # ----------------------------------------------------
-        # DESCRIBE
-        # ----------------------------------------------------
 
         st.subheader("📊 Estadísticas generales")
 
@@ -541,11 +497,9 @@ else:
 
         st.markdown("---")
 
-        # ----------------------------------------------------
-        # ANÁLISIS INDIVIDUAL
-        # ----------------------------------------------------
-
-        variables_numericas, _ = analyzer.clasificar_variables()
+        variables_numericas, _ = (
+            analyzer.clasificar_variables()
+        )
 
         variable = st.selectbox(
             "Selecciona una variable numérica:",
@@ -570,10 +524,6 @@ else:
             (serie < limite_inferior) |
             (serie > limite_superior)
         ]
-
-        # ----------------------------------------------------
-        # MÉTRICAS
-        # ----------------------------------------------------
 
         col1, col2, col3, col4 = st.columns(4)
 
@@ -600,10 +550,6 @@ else:
                 "Valores extremos",
                 len(valores_extremos)
             )
-
-        # ----------------------------------------------------
-        # TABLA
-        # ----------------------------------------------------
 
         resumen = pd.DataFrame(
             {
@@ -636,10 +582,6 @@ else:
             hide_index=True
         )
 
-        # ----------------------------------------------------
-        # INTERPRETACIÓN
-        # ----------------------------------------------------
-
         st.subheader("📝 Interpretación")
 
         if media > mediana:
@@ -647,7 +589,7 @@ else:
             st.write(
                 f"La media de **{variable}** ({media:.2f}) es mayor "
                 f"que la mediana ({mediana:.2f}), lo que puede indicar "
-                "una distribución con cierta asimetría positiva."
+                "cierta asimetría positiva."
             )
 
         elif media < mediana:
@@ -655,29 +597,21 @@ else:
             st.write(
                 f"La media de **{variable}** ({media:.2f}) es menor "
                 f"que la mediana ({mediana:.2f}), lo que puede indicar "
-                "una distribución con cierta asimetría negativa."
+                "cierta asimetría negativa."
             )
 
         else:
 
             st.write(
-                f"La media y la mediana de **{variable}** presentan "
-                "valores muy similares, lo que indica una distribución "
-                "relativamente equilibrada."
+                f"La media y la mediana de **{variable}** "
+                "presentan valores similares."
             )
-
-        st.write(
-            f"El rango de la variable va desde {minimo:.2f} hasta "
-            f"{maximo:.2f}. El rango intercuartílico es de "
-            f"{iqr:.2f}."
-        )
 
         if len(valores_extremos) > 0:
 
             st.warning(
                 f"Se detectaron {len(valores_extremos)} posibles "
-                "valores extremos utilizando el criterio del rango "
-                "intercuartílico (IQR)."
+                "valores extremos mediante el criterio IQR."
             )
 
         else:
@@ -688,12 +622,14 @@ else:
 
 
     # ========================================================
-    # ÍTEM 4 - VALORES FALTANTES
+    # ÍTEM 4
     # ========================================================
 
     elif opcion == "⚠️ Análisis de valores faltantes":
 
-        st.header("⚠️ Ítem 4: Análisis de valores faltantes")
+        st.header(
+            "⚠️ Ítem 4: Análisis de valores faltantes"
+        )
 
         nulos = df.isnull().sum()
 
@@ -701,9 +637,7 @@ else:
             df.isnull().mean() * 100
         )
 
-        total_nulos = int(
-            nulos.sum()
-        )
+        total_nulos = int(nulos.sum())
 
         variables_con_nulos = int(
             (nulos > 0).sum()
@@ -713,10 +647,6 @@ else:
             total_nulos /
             (df.shape[0] * df.shape[1])
         ) * 100
-
-        # ----------------------------------------------------
-        # MÉTRICAS
-        # ----------------------------------------------------
 
         col1, col2, col3 = st.columns(3)
 
@@ -738,12 +668,6 @@ else:
                 f"{porcentaje_total:.2f}%"
             )
 
-        st.markdown("---")
-
-        # ----------------------------------------------------
-        # TABLA
-        # ----------------------------------------------------
-
         tabla_nulos = pd.DataFrame(
             {
                 "Variable": df.columns,
@@ -757,17 +681,15 @@ else:
             ascending=False
         )
 
-        st.subheader("📋 Valores faltantes por variable")
+        st.subheader(
+            "📋 Valores faltantes por variable"
+        )
 
         st.dataframe(
             tabla_nulos.round(2),
             use_container_width=True,
             hide_index=True
         )
-
-        # ----------------------------------------------------
-        # VISUALIZACIÓN
-        # ----------------------------------------------------
 
         if total_nulos == 0:
 
@@ -776,8 +698,6 @@ else:
             )
 
         else:
-
-            st.subheader("📊 Visualización")
 
             datos_grafico = tabla_nulos[
                 tabla_nulos["Valores faltantes"] > 0
@@ -789,35 +709,15 @@ else:
                 ]
             )
 
-            st.subheader("📝 Tratamiento de valores faltantes")
-
             st.write(
-                "Dependiendo del contexto, los valores faltantes pueden "
-                "tratarse mediante imputación de valores, eliminación "
-                "de registros o conservación de los valores cuando la "
-                "ausencia tiene significado analítico."
-            )
-
-        st.subheader("📌 Conclusión")
-
-        if total_nulos == 0:
-
-            st.info(
-                "No es necesario realizar un proceso de imputación o "
-                "eliminación por valores faltantes, debido a que todas "
-                "las variables presentan información completa."
-            )
-
-        else:
-
-            st.info(
-                "Se recomienda analizar individualmente las variables "
-                "con valores faltantes antes de decidir el tratamiento."
+                "Se recomienda analizar el origen de los valores "
+                "faltantes antes de decidir entre imputación, "
+                "eliminación o conservación."
             )
 
 
     # ========================================================
-    # ÍTEM 5 - DISTRIBUCIÓN DE VARIABLES NUMÉRICAS
+    # ÍTEM 5
     # ========================================================
 
     elif opcion == "📊 Distribución de variables numéricas":
@@ -855,10 +755,6 @@ else:
 
             serie = df[variable]
 
-            # ------------------------------------------------
-            # MÉTRICAS
-            # ------------------------------------------------
-
             col1, col2, col3 = st.columns(3)
 
             with col1:
@@ -878,16 +774,6 @@ else:
                     "Mediana",
                     f"{serie.median():.2f}"
                 )
-
-            st.markdown("---")
-
-            # ------------------------------------------------
-            # HISTOGRAMA GENERAL
-            # ------------------------------------------------
-
-            st.subheader(
-                f"📊 Distribución de {variable}"
-            )
 
             fig, ax = plt.subplots(
                 figsize=(12, 6)
@@ -913,44 +799,6 @@ else:
 
             plt.close()
 
-            st.subheader("📝 Interpretación")
-
-            media = serie.mean()
-            mediana = serie.median()
-            desviacion = serie.std()
-
-            if media > mediana:
-
-                st.write(
-                    "La media es mayor que la mediana, lo que puede "
-                    "indicar cierta asimetría hacia valores altos."
-                )
-
-            elif media < mediana:
-
-                st.write(
-                    "La media es menor que la mediana, lo que puede "
-                    "indicar cierta asimetría hacia valores bajos."
-                )
-
-            else:
-
-                st.write(
-                    "La media y la mediana presentan valores similares."
-                )
-
-            st.write(
-                f"La desviación estándar es {desviacion:.2f}, "
-                "lo que permite observar el nivel de dispersión "
-                "de los datos alrededor de la media."
-            )
-
-            # ------------------------------------------------
-            # ANÁLISIS POR POSICIÓN
-            # ------------------------------------------------
-
-            st.markdown("---")
-
             st.subheader(
                 "⚽ Distribución según posición"
             )
@@ -970,39 +818,32 @@ else:
                     df["position"] == posicion_seleccionada
                 ]
 
-                if len(datos_posicion) > 0:
+                fig, ax = plt.subplots(
+                    figsize=(12, 6)
+                )
 
-                    fig, ax = plt.subplots(
-                        figsize=(12, 6)
-                    )
+                sns.histplot(
+                    datos_posicion[variable],
+                    bins=25,
+                    kde=True,
+                    ax=ax
+                )
 
-                    sns.histplot(
-                        datos_posicion[variable],
-                        bins=25,
-                        kde=True,
-                        ax=ax
-                    )
+                ax.set_title(
+                    f"{variable} - {posicion_seleccionada}"
+                )
 
-                    ax.set_title(
-                        f"{variable} - Posición: "
-                        f"{posicion_seleccionada}"
-                    )
+                ax.set_xlabel(variable)
+                ax.set_ylabel("Frecuencia")
 
-                    ax.set_xlabel(variable)
-                    ax.set_ylabel("Frecuencia")
+                plt.tight_layout()
 
-                    plt.tight_layout()
+                st.pyplot(fig)
 
-                    st.pyplot(fig)
-
-                    plt.close()
-
-            # ------------------------------------------------
-            # PORTEROS VS JUGADORES DE CAMPO
-            # ------------------------------------------------
+                plt.close()
 
             st.subheader(
-                "🧤 Comparación entre porteros y jugadores de campo"
+                "🧤 Porteros vs jugadores de campo"
             )
 
             df_comparacion = df.copy()
@@ -1038,8 +879,7 @@ else:
             )
 
             ax.set_title(
-                f"Comparación de {variable}: "
-                "porteros vs jugadores de campo"
+                f"Comparación de {variable}"
             )
 
             ax.set_xlabel(variable)
@@ -1050,10 +890,6 @@ else:
             st.pyplot(fig)
 
             plt.close()
-
-            # ------------------------------------------------
-            # RESUMEN
-            # ------------------------------------------------
 
             resumen_distribuciones = (
                 df[variables_disponibles]
@@ -1080,7 +916,7 @@ else:
             )
 
             st.subheader(
-                "📋 Resumen de las variables analizadas"
+                "📋 Resumen"
             )
 
             st.dataframe(
@@ -1090,7 +926,7 @@ else:
 
 
     # ========================================================
-    # ÍTEM 6 - VARIABLES CATEGÓRICAS
+    # ÍTEM 6
     # ========================================================
 
     elif opcion == "🔤 Análisis de variables categóricas":
@@ -1114,230 +950,129 @@ else:
             if variable in df.columns
         ]
 
-        if len(variables_disponibles) == 0:
+        variable = st.selectbox(
+            "Selecciona una variable categórica:",
+            variables_disponibles
+        )
 
-            st.error(
-                "No se encontraron las variables categóricas requeridas."
+        conteos = (
+            df[variable]
+            .value_counts()
+            .reset_index()
+        )
+
+        conteos.columns = [
+            "Categoría",
+            "Frecuencia"
+        ]
+
+        total = conteos["Frecuencia"].sum()
+
+        conteos["Porcentaje (%)"] = (
+            conteos["Frecuencia"] /
+            total *
+            100
+        )
+
+        categoria_mas_frecuente = (
+            conteos.iloc[0]["Categoría"]
+        )
+
+        frecuencia_maxima = (
+            conteos.iloc[0]["Frecuencia"]
+        )
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.metric(
+                "Número de categorías",
+                len(conteos)
             )
 
-        else:
-
-            variable = st.selectbox(
-                "Selecciona una variable categórica:",
-                variables_disponibles
+        with col2:
+            st.metric(
+                "Categoría más frecuente",
+                str(categoria_mas_frecuente)
             )
 
-            # ------------------------------------------------
-            # CONTEOS
-            # ------------------------------------------------
-
-            conteos = (
-                df[variable]
-                .value_counts()
-                .reset_index()
+        with col3:
+            st.metric(
+                "Frecuencia máxima",
+                int(frecuencia_maxima)
             )
 
-            conteos.columns = [
-                "Categoría",
-                "Frecuencia"
-            ]
+        st.dataframe(
+            conteos.round(2),
+            use_container_width=True,
+            hide_index=True
+        )
 
-            total = conteos["Frecuencia"].sum()
+        top_15 = conteos.head(15)
 
-            conteos["Porcentaje (%)"] = (
-                conteos["Frecuencia"] /
-                total *
-                100
-            )
+        fig, ax = plt.subplots(
+            figsize=(12, 7)
+        )
 
-            # ------------------------------------------------
-            # MÉTRICAS
-            # ------------------------------------------------
+        sns.barplot(
+            data=top_15,
+            x="Frecuencia",
+            y="Categoría",
+            ax=ax
+        )
 
-            categoria_mas_frecuente = (
-                conteos.iloc[0]["Categoría"]
-            )
+        ax.set_title(
+            f"Principales categorías de {variable}"
+        )
 
-            frecuencia_maxima = (
-                conteos.iloc[0]["Frecuencia"]
-            )
+        ax.set_xlabel("Frecuencia")
+        ax.set_ylabel(variable)
 
-            col1, col2, col3 = st.columns(3)
+        plt.tight_layout()
 
-            with col1:
-                st.metric(
-                    "Número de categorías",
-                    len(conteos)
-                )
+        st.pyplot(fig)
 
-            with col2:
-                st.metric(
-                    "Categoría más frecuente",
-                    str(categoria_mas_frecuente)
-                )
+        plt.close()
 
-            with col3:
-                st.metric(
-                    "Frecuencia máxima",
-                    int(frecuencia_maxima)
-                )
+        st.subheader(
+            "📈 Participación porcentual"
+        )
 
-            st.markdown("---")
+        top_10 = conteos.head(10)
 
-            # ------------------------------------------------
-            # TABLA
-            # ------------------------------------------------
+        fig, ax = plt.subplots(
+            figsize=(12, 7)
+        )
 
-            st.subheader(
-                "📋 Frecuencia y proporción"
-            )
+        sns.barplot(
+            data=top_10,
+            x="Porcentaje (%)",
+            y="Categoría",
+            ax=ax
+        )
 
-            st.dataframe(
-                conteos.round(2),
-                use_container_width=True,
-                hide_index=True
-            )
+        ax.set_title(
+            f"Participación porcentual de {variable}"
+        )
 
-            # ------------------------------------------------
-            # GRÁFICO
-            # ------------------------------------------------
+        ax.set_xlabel("Porcentaje (%)")
+        ax.set_ylabel(variable)
 
-            st.subheader(
-                "📊 Distribución de categorías"
-            )
+        plt.tight_layout()
 
-            top_15 = conteos.head(15)
+        st.pyplot(fig)
 
-            fig, ax = plt.subplots(
-                figsize=(12, 7)
-            )
+        plt.close()
 
-            sns.barplot(
-                data=top_15,
-                x="Frecuencia",
-                y="Categoría",
-                ax=ax
-            )
-
-            ax.set_title(
-                f"Principales categorías de {variable}"
-            )
-
-            ax.set_xlabel("Frecuencia")
-            ax.set_ylabel(variable)
-
-            plt.tight_layout()
-
-            st.pyplot(fig)
-
-            plt.close()
-
-            # ------------------------------------------------
-            # PORCENTAJES
-            # ------------------------------------------------
-
-            st.subheader(
-                "📈 Participación porcentual"
-            )
-
-            top_10 = conteos.head(10)
-
-            fig, ax = plt.subplots(
-                figsize=(12, 7)
-            )
-
-            sns.barplot(
-                data=top_10,
-                x="Porcentaje (%)",
-                y="Categoría",
-                ax=ax
-            )
-
-            ax.set_title(
-                f"Participación porcentual de {variable}"
-            )
-
-            ax.set_xlabel("Porcentaje (%)")
-            ax.set_ylabel(variable)
-
-            plt.tight_layout()
-
-            st.pyplot(fig)
-
-            plt.close()
-
-            # ------------------------------------------------
-            # INTERPRETACIÓN
-            # ------------------------------------------------
-
-            st.subheader(
-                "📝 Interpretación"
-            )
-
-            porcentaje_mayor = (
-                conteos.iloc[0]["Porcentaje (%)"]
-            )
-
-            st.write(
-                f"La categoría más frecuente de **{variable}** es "
-                f"**{categoria_mas_frecuente}**, con "
-                f"{int(frecuencia_maxima):,} registros, "
-                f"equivalentes aproximadamente al "
-                f"{porcentaje_mayor:.2f}% del total."
-            )
-
-            if variable == "nationality":
-
-                st.write(
-                    "La nacionalidad permite observar la composición "
-                    "internacional de los jugadores registrados en el dataset."
-                )
-
-            elif variable == "team":
-
-                st.write(
-                    "El análisis de los equipos permite identificar "
-                    "qué selecciones presentan mayor cantidad de "
-                    "observaciones en el dataset."
-                )
-
-            elif variable == "position":
-
-                st.write(
-                    "La posición permite analizar la distribución "
-                    "de los jugadores según su función dentro del campo."
-                )
-
-            elif variable == "preferred_foot":
-
-                st.write(
-                    "El pie preferido permite observar la predominancia "
-                    "del uso del pie derecho o izquierdo."
-                )
-
-            elif variable == "tournament_stage":
-
-                st.write(
-                    "La etapa del torneo permite observar cómo se "
-                    "distribuyen las observaciones entre las diferentes "
-                    "fases de la competición."
-                )
-
-            elif variable == "match_result":
-
-                st.write(
-                    "El resultado del partido permite comparar la "
-                    "cantidad de observaciones asociadas a cada resultado."
-                )
-
-            st.success(
-                "✅ El análisis categórico permite identificar "
-                "las categorías predominantes y comparar su participación."
-            )
+        st.write(
+            f"La categoría más frecuente de **{variable}** es "
+            f"**{categoria_mas_frecuente}**, con "
+            f"{int(frecuencia_maxima):,} registros."
+        )
 
 
     # ========================================================
-    # ÍTEM 7 - ANÁLISIS BIVARIADO
+    # ÍTEM 7
     # ========================================================
 
     elif opcion == "📊 Análisis bivariado":
@@ -1346,75 +1081,1146 @@ else:
             "📊 Ítem 7: Análisis bivariado"
         )
 
-        st.write(
-            "En este apartado se analiza la relación entre variables "
-            "numéricas y categóricas mediante comparaciones entre grupos."
-        )
-
-        st.markdown("---")
-
-        # ====================================================
-        # 7.1 PLAYER RATING SEGÚN POSITION
-        # ====================================================
+        # ----------------------------------------------------
+        # 7.1
+        # ----------------------------------------------------
 
         st.subheader(
             "7.1 Comparación de player_rating según position"
         )
 
-        if (
-            "player_rating" in df.columns
-            and "position" in df.columns
-        ):
-
-            resumen_rating = (
-                df.groupby("position")["player_rating"]
-                .agg(
-                    [
-                        "count",
-                        "mean",
-                        "median",
-                        "std",
-                        "min",
-                        "max"
-                    ]
-                )
-                .round(2)
-                .sort_values(
+        resumen_rating = (
+            df.groupby("position")["player_rating"]
+            .agg(
+                [
+                    "count",
                     "mean",
-                    ascending=False
-                )
+                    "median",
+                    "std",
+                    "min",
+                    "max"
+                ]
+            )
+            .round(2)
+            .sort_values(
+                "mean",
+                ascending=False
+            )
+        )
+
+        st.dataframe(
+            resumen_rating,
+            use_container_width=True
+        )
+
+        fig, ax = plt.subplots(
+            figsize=(12, 6)
+        )
+
+        sns.boxplot(
+            data=df,
+            x="position",
+            y="player_rating",
+            ax=ax
+        )
+
+        ax.set_title(
+            "Distribución de player_rating según posición"
+        )
+
+        ax.set_xlabel("Posición")
+        ax.set_ylabel("Player Rating")
+
+        plt.xticks(rotation=45)
+
+        plt.tight_layout()
+
+        st.pyplot(fig)
+
+        plt.close()
+
+        # ----------------------------------------------------
+        # 7.2
+        # ----------------------------------------------------
+
+        st.subheader(
+            "7.2 Comparación de performance_score según match_result"
+        )
+
+        resumen_performance = (
+            df.groupby("match_result")["performance_score"]
+            .agg(
+                [
+                    "count",
+                    "mean",
+                    "median",
+                    "std",
+                    "min",
+                    "max"
+                ]
+            )
+            .round(2)
+            .sort_values(
+                "mean",
+                ascending=False
+            )
+        )
+
+        st.dataframe(
+            resumen_performance,
+            use_container_width=True
+        )
+
+        fig, ax = plt.subplots(
+            figsize=(10, 6)
+        )
+
+        sns.boxplot(
+            data=df,
+            x="match_result",
+            y="performance_score",
+            ax=ax
+        )
+
+        ax.set_title(
+            "Performance Score según resultado del partido"
+        )
+
+        ax.set_xlabel("Resultado del partido")
+        ax.set_ylabel("Performance Score")
+
+        plt.tight_layout()
+
+        st.pyplot(fig)
+
+        plt.close()
+
+        # ----------------------------------------------------
+        # 7.3
+        # ----------------------------------------------------
+
+        st.subheader(
+            "7.3 Comparación de variables físicas según posición"
+        )
+
+        variable_fisica = st.selectbox(
+            "Selecciona la variable física:",
+            [
+                "distance_covered_km",
+                "top_speed_kmh"
+            ]
+        )
+
+        resumen_fisico = (
+            df.groupby("position")[variable_fisica]
+            .agg(
+                [
+                    "count",
+                    "mean",
+                    "median",
+                    "std",
+                    "min",
+                    "max"
+                ]
+            )
+            .round(2)
+            .sort_values(
+                "mean",
+                ascending=False
+            )
+        )
+
+        st.dataframe(
+            resumen_fisico,
+            use_container_width=True
+        )
+
+        fig, ax = plt.subplots(
+            figsize=(12, 6)
+        )
+
+        sns.boxplot(
+            data=df,
+            x="position",
+            y=variable_fisica,
+            ax=ax
+        )
+
+        ax.set_title(
+            f"{variable_fisica} según posición"
+        )
+
+        ax.set_xlabel("Posición")
+        ax.set_ylabel(variable_fisica)
+
+        plt.xticks(rotation=45)
+
+        plt.tight_layout()
+
+        st.pyplot(fig)
+
+        plt.close()
+
+        st.info(
+            "El análisis bivariado permite identificar diferencias "
+            "entre grupos y observar cómo cambia una variable numérica "
+            "según una categoría."
+        )
+
+
+    # ========================================================
+    # ÍTEM 8
+    # ========================================================
+
+    elif opcion == "🔤 Bivariado categórico":
+
+        st.header(
+            "🔤 Ítem 8: Análisis bivariado categórico vs categórico"
+        )
+
+        st.write(
+            "En este apartado se comparan dos variables categóricas "
+            "para identificar patrones y diferencias entre grupos."
+        )
+
+        # ----------------------------------------------------
+        # 8.1 POSITION VS TOURNAMENT_STAGE
+        # ----------------------------------------------------
+
+        st.subheader(
+            "8.1 Comparación de position con tournament_stage"
+        )
+
+        tabla_position_stage = pd.crosstab(
+            df["position"],
+            df["tournament_stage"]
+        )
+
+        st.dataframe(
+            tabla_position_stage,
+            use_container_width=True
+        )
+
+        fig, ax = plt.subplots(
+            figsize=(12, 7)
+        )
+
+        tabla_position_stage.plot(
+            kind="bar",
+            ax=ax
+        )
+
+        ax.set_title(
+            "Position según etapa del torneo"
+        )
+
+        ax.set_xlabel(
+            "Posición"
+        )
+
+        ax.set_ylabel(
+            "Frecuencia"
+        )
+
+        plt.xticks(rotation=45)
+
+        ax.legend(
+            title="Etapa del torneo"
+        )
+
+        plt.tight_layout()
+
+        st.pyplot(fig)
+
+        plt.close()
+
+        st.markdown(
+            """
+            **Interpretación:**
+
+            Esta comparación permite observar cómo se distribuyen
+            las diferentes posiciones de los jugadores entre las
+            distintas etapas del torneo.
+            """
+        )
+
+        st.markdown("---")
+
+        # ----------------------------------------------------
+        # 8.2 TEAM VS MATCH_RESULT
+        # ----------------------------------------------------
+
+        st.subheader(
+            "8.2 Análisis de team frente a match_result"
+        )
+
+        tabla_team_resultado = pd.crosstab(
+            df["team"],
+            df["match_result"]
+        )
+
+        st.dataframe(
+            tabla_team_resultado,
+            use_container_width=True
+        )
+
+        fig, ax = plt.subplots(
+            figsize=(14, 8)
+        )
+
+        tabla_team_resultado.plot(
+            kind="bar",
+            stacked=True,
+            ax=ax
+        )
+
+        ax.set_title(
+            "Resultado de partidos según equipo"
+        )
+
+        ax.set_xlabel(
+            "Equipo"
+        )
+
+        ax.set_ylabel(
+            "Frecuencia"
+        )
+
+        plt.xticks(rotation=75)
+
+        ax.legend(
+            title="Resultado"
+        )
+
+        plt.tight_layout()
+
+        st.pyplot(fig)
+
+        plt.close()
+
+        st.markdown(
+            """
+            **Interpretación:**
+
+            El análisis permite comparar los resultados registrados
+            para cada equipo. La visualización facilita identificar
+            diferencias en la distribución de los resultados.
+            """
+        )
+
+        st.markdown("---")
+
+        # ----------------------------------------------------
+        # 8.3 PREFERRED_FOOT VS POSITION
+        # ----------------------------------------------------
+
+        st.subheader(
+            "8.3 Comparación de preferred_foot con position"
+        )
+
+        tabla_pie_position = pd.crosstab(
+            df["position"],
+            df["preferred_foot"]
+        )
+
+        st.dataframe(
+            tabla_pie_position,
+            use_container_width=True
+        )
+
+        fig, ax = plt.subplots(
+            figsize=(12, 7)
+        )
+
+        tabla_pie_position.plot(
+            kind="bar",
+            ax=ax
+        )
+
+        ax.set_title(
+            "Pie preferido según posición"
+        )
+
+        ax.set_xlabel(
+            "Posición"
+        )
+
+        ax.set_ylabel(
+            "Frecuencia"
+        )
+
+        plt.xticks(rotation=45)
+
+        ax.legend(
+            title="Pie preferido"
+        )
+
+        plt.tight_layout()
+
+        st.pyplot(fig)
+
+        plt.close()
+
+        st.markdown(
+            """
+            **Interpretación:**
+
+            La comparación permite observar la distribución del pie
+            preferido de los jugadores dentro de cada posición.
+            Esto facilita identificar si existe predominancia de
+            determinado pie en alguna posición.
+            """
+        )
+
+        st.success(
+            "✅ Se completaron las tres comparaciones categóricas "
+            "solicitadas en el Ítem 8."
+        )
+
+
+    # ========================================================
+    # ÍTEM 9
+    # ========================================================
+
+    elif opcion == "🎛️ Análisis por parámetros":
+
+        st.header(
+            "🎛️ Ítem 9: Análisis basado en parámetros seleccionados"
+        )
+
+        st.write(
+            "Utiliza los filtros para realizar un análisis dinámico "
+            "del rendimiento de los jugadores."
+        )
+
+        # ----------------------------------------------------
+        # CONVERSIÓN DE FECHA
+        # ----------------------------------------------------
+
+        df_parametros = df.copy()
+
+        if "match_date" in df_parametros.columns:
+
+            df_parametros["match_date"] = pd.to_datetime(
+                df_parametros["match_date"],
+                errors="coerce"
             )
 
+        # ----------------------------------------------------
+        # FILTROS CATEGÓRICOS
+        # ----------------------------------------------------
+
+        st.subheader(
+            "🎯 Filtros"
+        )
+
+        col1, col2 = st.columns(2)
+
+        # ----------------------------------------------------
+        # TEAM
+        # ----------------------------------------------------
+
+        if "team" in df_parametros.columns:
+
+            equipos = sorted(
+                df_parametros["team"]
+                .dropna()
+                .unique()
+                .tolist()
+            )
+
+            equipos_seleccionados = st.multiselect(
+                "Selecciona team:",
+                equipos,
+                default=[]
+            )
+
+        else:
+
+            equipos_seleccionados = []
+
+        # ----------------------------------------------------
+        # POSITION
+        # ----------------------------------------------------
+
+        if "position" in df_parametros.columns:
+
+            posiciones = sorted(
+                df_parametros["position"]
+                .dropna()
+                .unique()
+                .tolist()
+            )
+
+            posiciones_seleccionadas = st.multiselect(
+                "Selecciona position:",
+                posiciones,
+                default=[]
+            )
+
+        else:
+
+            posiciones_seleccionadas = []
+
+        # ----------------------------------------------------
+        # TOURNAMENT STAGE
+        # ----------------------------------------------------
+
+        if "tournament_stage" in df_parametros.columns:
+
+            etapas = sorted(
+                df_parametros["tournament_stage"]
+                .dropna()
+                .unique()
+                .tolist()
+            )
+
+            etapas_seleccionadas = st.multiselect(
+                "Selecciona tournament_stage:",
+                etapas,
+                default=[]
+            )
+
+        else:
+
+            etapas_seleccionadas = []
+
+        # ----------------------------------------------------
+        # MATCH RESULT
+        # ----------------------------------------------------
+
+        if "match_result" in df_parametros.columns:
+
+            resultados = sorted(
+                df_parametros["match_result"]
+                .dropna()
+                .unique()
+                .tolist()
+            )
+
+            resultados_seleccionados = st.multiselect(
+                "Selecciona match_result:",
+                resultados,
+                default=[]
+            )
+
+        else:
+
+            resultados_seleccionados = []
+
+        # ----------------------------------------------------
+        # PLAYER NAME
+        # ----------------------------------------------------
+
+        if "player_name" in df_parametros.columns:
+
+            jugadores = sorted(
+                df_parametros["player_name"]
+                .dropna()
+                .unique()
+                .tolist()
+            )
+
+            jugadores_seleccionados = st.multiselect(
+                "Selecciona player_name:",
+                jugadores,
+                default=[]
+            )
+
+        else:
+
+            jugadores_seleccionados = []
+
+        # ----------------------------------------------------
+        # FILTROS NUMÉRICOS
+        # ----------------------------------------------------
+
+        st.subheader(
+            "📏 Filtro de rango numérico"
+        )
+
+        variables_rango = [
+            "age",
+            "player_rating",
+            "performance_score",
+            "distance_covered_km",
+            "top_speed_kmh"
+        ]
+
+        variables_rango = [
+            variable
+            for variable in variables_rango
+            if variable in df_parametros.columns
+        ]
+
+        variable_rango = st.selectbox(
+            "Selecciona una variable para filtrar:",
+            variables_rango
+        )
+
+        minimo = float(
+            df_parametros[variable_rango].min()
+        )
+
+        maximo = float(
+            df_parametros[variable_rango].max()
+        )
+
+        if minimo == maximo:
+
+            rango_seleccionado = (
+                minimo,
+                maximo
+            )
+
+            st.info(
+                "La variable seleccionada presenta un único valor."
+            )
+
+        else:
+
+            rango_seleccionado = st.slider(
+                "Selecciona el rango:",
+                min_value=minimo,
+                max_value=maximo,
+                value=(minimo, maximo)
+            )
+
+        # ----------------------------------------------------
+        # APLICAR FILTROS
+        # ----------------------------------------------------
+
+        df_filtrado = df_parametros.copy()
+
+        if len(equipos_seleccionados) > 0:
+
+            df_filtrado = df_filtrado[
+                df_filtrado["team"].isin(
+                    equipos_seleccionados
+                )
+            ]
+
+        if len(posiciones_seleccionadas) > 0:
+
+            df_filtrado = df_filtrado[
+                df_filtrado["position"].isin(
+                    posiciones_seleccionadas
+                )
+            ]
+
+        if len(etapas_seleccionadas) > 0:
+
+            df_filtrado = df_filtrado[
+                df_filtrado["tournament_stage"].isin(
+                    etapas_seleccionadas
+                )
+            ]
+
+        if len(resultados_seleccionados) > 0:
+
+            df_filtrado = df_filtrado[
+                df_filtrado["match_result"].isin(
+                    resultados_seleccionados
+                )
+            ]
+
+        if len(jugadores_seleccionados) > 0:
+
+            df_filtrado = df_filtrado[
+                df_filtrado["player_name"].isin(
+                    jugadores_seleccionados
+                )
+            ]
+
+        df_filtrado = df_filtrado[
+            (
+                df_filtrado[variable_rango]
+                >= rango_seleccionado[0]
+            )
+            &
+            (
+                df_filtrado[variable_rango]
+                <= rango_seleccionado[1]
+            )
+        ]
+
+        # ----------------------------------------------------
+        # RESULTADO DEL FILTRO
+        # ----------------------------------------------------
+
+        st.markdown("---")
+
+        st.subheader(
+            "📊 Resultado del análisis dinámico"
+        )
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.metric(
+                "Registros filtrados",
+                f"{len(df_filtrado):,}"
+            )
+
+        with col2:
+            st.metric(
+                "Registros originales",
+                f"{len(df_parametros):,}"
+            )
+
+        with col3:
+
+            if len(df_parametros) > 0:
+
+                porcentaje_filtrado = (
+                    len(df_filtrado) /
+                    len(df_parametros)
+                    * 100
+                )
+
+            else:
+
+                porcentaje_filtrado = 0
+
+            st.metric(
+                "Porcentaje seleccionado",
+                f"{porcentaje_filtrado:.2f}%"
+            )
+
+        # ----------------------------------------------------
+        # MÉTRICAS PARA COMPARAR JUGADORES
+        # ----------------------------------------------------
+
+        st.subheader(
+            "⚽ Selección de métricas de rendimiento"
+        )
+
+        metricas_ofensivas = [
+            "goals",
+            "assists",
+            "shots",
+            "shots_on_target",
+            "key_passes",
+            "offensive_contribution"
+        ]
+
+        metricas_defensivas = [
+            "tackles",
+            "interceptions",
+            "clearances",
+            "blocks",
+            "recoveries",
+            "defensive_actions",
+            "defensive_contribution"
+        ]
+
+        metricas_fisicas = [
+            "distance_covered_km",
+            "sprint_distance_km",
+            "top_speed_kmh",
+            "accelerations",
+            "decelerations",
+            "stamina_score"
+        ]
+
+        todas_metricas = (
+            metricas_ofensivas +
+            metricas_defensivas +
+            metricas_fisicas +
+            [
+                "player_rating",
+                "performance_score",
+                "creativity_score",
+                "consistency_score",
+                "clutch_performance_score"
+            ]
+        )
+
+        todas_metricas = [
+            variable
+            for variable in todas_metricas
+            if variable in df_filtrado.columns
+        ]
+
+        metricas_seleccionadas = st.multiselect(
+            "Selecciona una o más métricas:",
+            todas_metricas,
+            default=[
+                variable
+                for variable in [
+                    "player_rating",
+                    "performance_score"
+                ]
+                if variable in todas_metricas
+            ]
+        )
+
+        if len(df_filtrado) == 0:
+
+            st.warning(
+                "⚠️ No existen registros que cumplan con "
+                "los filtros seleccionados."
+            )
+
+        else:
+
             st.dataframe(
-                resumen_rating,
+                df_filtrado.head(100),
                 use_container_width=True
+            )
+
+            if len(metricas_seleccionadas) > 0:
+
+                columnas_tabla = [
+                    "player_name"
+                ]
+
+                if "team" in df_filtrado.columns:
+                    columnas_tabla.append("team")
+
+                if "position" in df_filtrado.columns:
+                    columnas_tabla.append("position")
+
+                columnas_tabla += metricas_seleccionadas
+
+                columnas_tabla = [
+                    columna
+                    for columna in columnas_tabla
+                    if columna in df_filtrado.columns
+                ]
+
+                tabla_metricas = (
+                    df_filtrado[columnas_tabla]
+                    .groupby(
+                        [
+                            columna
+                            for columna in [
+                                "player_name",
+                                "team",
+                                "position"
+                            ]
+                            if columna in columnas_tabla
+                        ]
+                    )[metricas_seleccionadas]
+                    .mean()
+                    .round(2)
+                    .sort_values(
+                        metricas_seleccionadas[0],
+                        ascending=False
+                    )
+                )
+
+                st.subheader(
+                    "📋 Comparación de jugadores"
+                )
+
+                st.dataframe(
+                    tabla_metricas,
+                    use_container_width=True
+                )
+
+                # --------------------------------------------
+                # GRÁFICO DINÁMICO
+                # --------------------------------------------
+
+                if len(metricas_seleccionadas) == 1:
+
+                    metrica = metricas_seleccionadas[0]
+
+                    ranking = (
+                        df_filtrado
+                        .groupby("player_name")[metrica]
+                        .mean()
+                        .sort_values(
+                            ascending=False
+                        )
+                        .head(10)
+                        .reset_index()
+                    )
+
+                    fig, ax = plt.subplots(
+                        figsize=(12, 7)
+                    )
+
+                    sns.barplot(
+                        data=ranking,
+                        x=metrica,
+                        y="player_name",
+                        ax=ax
+                    )
+
+                    ax.set_title(
+                        f"Top 10 jugadores según {metrica}"
+                    )
+
+                    ax.set_xlabel(
+                        metrica
+                    )
+
+                    ax.set_ylabel(
+                        "Jugador"
+                    )
+
+                    plt.tight_layout()
+
+                    st.pyplot(fig)
+
+                    plt.close()
+
+                else:
+
+                    ranking = (
+                        df_filtrado
+                        .groupby("player_name")[
+                            metricas_seleccionadas
+                        ]
+                        .mean()
+                        .sort_values(
+                            metricas_seleccionadas[0],
+                            ascending=False
+                        )
+                        .head(10)
+                    )
+
+                    st.subheader(
+                        "📊 Comparación de métricas seleccionadas"
+                    )
+
+                    st.dataframe(
+                        ranking.round(2),
+                        use_container_width=True
+                    )
+
+        # ----------------------------------------------------
+        # ANÁLISIS TEMPORAL
+        # ----------------------------------------------------
+
+        st.markdown("---")
+
+        st.subheader(
+            "📅 Análisis temporal"
+        )
+
+        if "match_date" in df_filtrado.columns:
+
+            df_temporal = df_filtrado.dropna(
+                subset=["match_date"]
+            ).copy()
+
+            if len(df_temporal) > 0:
+
+                df_temporal["mes"] = (
+                    df_temporal["match_date"]
+                    .dt.to_period("M")
+                    .astype(str)
+                )
+
+                variable_temporal = st.selectbox(
+                    "Selecciona una métrica temporal:",
+                    [
+                        variable
+                        for variable in [
+                            "player_rating",
+                            "performance_score",
+                            "goals",
+                            "assists"
+                        ]
+                        if variable in df_temporal.columns
+                    ]
+                )
+
+                evolucion = (
+                    df_temporal
+                    .groupby("mes")[variable_temporal]
+                    .mean()
+                    .reset_index()
+                )
+
+                fig, ax = plt.subplots(
+                    figsize=(12, 6)
+                )
+
+                sns.lineplot(
+                    data=evolucion,
+                    x="mes",
+                    y=variable_temporal,
+                    marker="o",
+                    ax=ax
+                )
+
+                ax.set_title(
+                    f"Evolución temporal de {variable_temporal}"
+                )
+
+                ax.set_xlabel(
+                    "Mes"
+                )
+
+                ax.set_ylabel(
+                    variable_temporal
+                )
+
+                plt.xticks(rotation=45)
+
+                plt.tight_layout()
+
+                st.pyplot(fig)
+
+                plt.close()
+
+            else:
+
+                st.warning(
+                    "No existen fechas válidas para realizar "
+                    "el análisis temporal."
+                )
+
+
+    # ========================================================
+    # ÍTEM 10
+    # ========================================================
+
+    elif opcion == "💡 Hallazgos clave":
+
+        st.header(
+            "💡 Ítem 10: Hallazgos clave"
+        )
+
+        st.write(
+            "Esta sección presenta un resumen de los principales "
+            "hallazgos derivados del análisis exploratorio de datos."
+        )
+
+        # ----------------------------------------------------
+        # MÉTRICAS GENERALES
+        # ----------------------------------------------------
+
+        filas, columnas = df.shape
+
+        total_nulos = int(
+            df.isnull().sum().sum()
+        )
+
+        duplicados = int(
+            df.duplicated().sum()
+        )
+
+        col1, col2, col3, col4 = st.columns(4)
+
+        with col1:
+            st.metric(
+                "Registros",
+                f"{filas:,}"
+            )
+
+        with col2:
+            st.metric(
+                "Variables",
+                columnas
+            )
+
+        with col3:
+            st.metric(
+                "Valores faltantes",
+                total_nulos
+            )
+
+        with col4:
+            st.metric(
+                "Duplicados",
+                duplicados
+            )
+
+        st.markdown("---")
+
+        # ----------------------------------------------------
+        # HALLAZGO 1
+        # ----------------------------------------------------
+
+        st.subheader(
+            "📊 Hallazgo 1: Calidad de los datos"
+        )
+
+        if total_nulos == 0 and duplicados == 0:
+
+            st.success(
+                "El dataset presenta una estructura completa, "
+                "sin valores faltantes ni registros duplicados."
+            )
+
+        elif total_nulos > 0:
+
+            st.warning(
+                "El dataset presenta valores faltantes que deben "
+                "ser considerados antes de realizar análisis "
+                "estadísticos posteriores."
+            )
+
+        else:
+
+            st.warning(
+                "Se identificaron registros duplicados que "
+                "deben ser evaluados."
+            )
+
+        # ----------------------------------------------------
+        # HALLAZGO 2
+        # ----------------------------------------------------
+
+        st.subheader(
+            "⚽ Hallazgo 2: Rendimiento por posición"
+        )
+
+        if (
+            "position" in df.columns
+            and "player_rating" in df.columns
+        ):
+
+            rating_position = (
+                df.groupby("position")["player_rating"]
+                .mean()
+                .sort_values(
+                    ascending=False
+                )
+                .reset_index()
+            )
+
+            posicion_mayor_rating = (
+                rating_position.iloc[0]["position"]
+            )
+
+            mayor_rating = (
+                rating_position.iloc[0]["player_rating"]
+            )
+
+            st.write(
+                f"La posición con mayor promedio de "
+                f"`player_rating` en el dataset es "
+                f"**{posicion_mayor_rating}**, con un promedio "
+                f"de **{mayor_rating:.2f}**."
             )
 
             fig, ax = plt.subplots(
                 figsize=(12, 6)
             )
 
-            sns.boxplot(
-                data=df,
-                x="position",
-                y="player_rating",
+            sns.barplot(
+                data=rating_position,
+                x="player_rating",
+                y="position",
                 ax=ax
             )
 
             ax.set_title(
-                "Distribución de player_rating según posición"
+                "Promedio de player_rating por posición"
             )
 
             ax.set_xlabel(
-                "Posición"
+                "Player Rating promedio"
             )
 
             ax.set_ylabel(
-                "Player Rating"
-            )
-
-            plt.xticks(
-                rotation=45
+                "Posición"
             )
 
             plt.tight_layout()
@@ -1423,90 +2229,67 @@ else:
 
             plt.close()
 
-            st.markdown(
-                """
-                **Interpretación:**
-
-                El gráfico permite comparar el nivel de valoración de
-                los jugadores según su posición. La línea central de
-                cada caja representa la mediana del `player_rating`,
-                mientras que el tamaño de la caja representa la
-                dispersión de los valores.
-
-                Las posiciones con una mediana más elevada presentan,
-                en términos generales, mayores valoraciones. Los puntos
-                alejados de las cajas pueden representar posibles
-                valores extremos.
-                """
-            )
-
-        else:
-
-            st.error(
-                "No se encontraron las variables necesarias."
-            )
-
-        st.markdown("---")
-
-        # ====================================================
-        # 7.2 PERFORMANCE SCORE SEGÚN MATCH RESULT
-        # ====================================================
+        # ----------------------------------------------------
+        # HALLAZGO 3
+        # ----------------------------------------------------
 
         st.subheader(
-            "7.2 Comparación de performance_score según match_result"
+            "🏆 Hallazgo 3: Performance según resultado"
         )
 
         if (
-            "performance_score" in df.columns
-            and "match_result" in df.columns
+            "match_result" in df.columns
+            and "performance_score" in df.columns
         ):
 
-            resumen_performance = (
-                df.groupby("match_result")["performance_score"]
-                .agg(
-                    [
-                        "count",
-                        "mean",
-                        "median",
-                        "std",
-                        "min",
-                        "max"
-                    ]
-                )
-                .round(2)
+            performance_resultado = (
+                df.groupby("match_result")[
+                    "performance_score"
+                ]
+                .mean()
                 .sort_values(
-                    "mean",
                     ascending=False
                 )
+                .reset_index()
             )
 
-            st.dataframe(
-                resumen_performance,
-                use_container_width=True
+            resultado_mayor = (
+                performance_resultado.iloc[0]["match_result"]
+            )
+
+            performance_mayor = (
+                performance_resultado.iloc[0][
+                    "performance_score"
+                ]
+            )
+
+            st.write(
+                f"El resultado **{resultado_mayor}** presenta "
+                f"el mayor promedio de `performance_score`, "
+                f"con un valor de **{performance_mayor:.2f}**."
             )
 
             fig, ax = plt.subplots(
                 figsize=(10, 6)
             )
 
-            sns.boxplot(
-                data=df,
+            sns.barplot(
+                data=performance_resultado,
                 x="match_result",
                 y="performance_score",
                 ax=ax
             )
 
             ax.set_title(
-                "Distribución de performance_score "
-                "según resultado del partido"
+                "Performance Score promedio según resultado"
             )
 
             ax.set_xlabel(
-                "Resultado del partido"
+                "Resultado"
             )
 
             ax.set_ylabel(
-                "Performance Score"
+                "Performance Score promedio"
             )
 
             plt.tight_layout()
@@ -1515,197 +2298,160 @@ else:
 
             plt.close()
 
-            st.markdown(
-                """
-                **Interpretación:**
-
-                Se compara el `performance_score` de los jugadores
-                según el resultado registrado en `match_result`.
-
-                Esta comparación permite observar si existen diferencias
-                en el nivel de rendimiento de los jugadores cuando el
-                equipo obtiene diferentes resultados.
-
-                La mediana permite identificar el comportamiento central
-                de cada grupo, mientras que la dispersión permite observar
-                qué tan variables son las puntuaciones.
-                """
-            )
-
-        else:
-
-            st.error(
-                "No se encontraron las variables necesarias."
-            )
-
-        st.markdown("---")
-
-        # ====================================================
-        # 7.3 DISTANCE COVERED / TOP SPEED SEGÚN POSITION
-        # ====================================================
+        # ----------------------------------------------------
+        # HALLAZGO 4
+        # ----------------------------------------------------
 
         st.subheader(
-            "7.3 Comparación de variables físicas según posición"
+            "🏃 Hallazgo 4: Variables físicas"
         )
-
-        variables_fisicas = []
-
-        if "distance_covered_km" in df.columns:
-            variables_fisicas.append(
-                "distance_covered_km"
-            )
-
-        if "top_speed_kmh" in df.columns:
-            variables_fisicas.append(
-                "top_speed_kmh"
-            )
 
         if (
-            len(variables_fisicas) > 0
-            and "position" in df.columns
+            "position" in df.columns
+            and "distance_covered_km" in df.columns
         ):
 
-            variable_fisica = st.selectbox(
-                "Selecciona la variable física:",
-                variables_fisicas
-            )
-
-            resumen_fisico = (
-                df.groupby("position")[variable_fisica]
-                .agg(
-                    [
-                        "count",
-                        "mean",
-                        "median",
-                        "std",
-                        "min",
-                        "max"
-                    ]
-                )
-                .round(2)
+            distancia_position = (
+                df.groupby("position")[
+                    "distance_covered_km"
+                ]
+                .mean()
                 .sort_values(
-                    "mean",
                     ascending=False
                 )
+                .reset_index()
             )
 
-            st.dataframe(
-                resumen_fisico,
-                use_container_width=True
+            posicion_mayor_distancia = (
+                distancia_position.iloc[0]["position"]
             )
 
-            fig, ax = plt.subplots(
-                figsize=(12, 6)
+            mayor_distancia = (
+                distancia_position.iloc[0][
+                    "distance_covered_km"
+                ]
             )
 
-            sns.boxplot(
-                data=df,
-                x="position",
-                y=variable_fisica,
-                ax=ax
+            st.write(
+                f"La posición **{posicion_mayor_distancia}** "
+                f"presenta el mayor promedio de distancia "
+                f"recorrida, con **{mayor_distancia:.2f} km**."
             )
 
-            if variable_fisica == "distance_covered_km":
+        # ----------------------------------------------------
+        # HALLAZGO 5
+        # ----------------------------------------------------
 
-                titulo = (
-                    "Distancia recorrida según posición"
-                )
+        st.subheader(
+            "👟 Hallazgo 5: Pie preferido"
+        )
 
-                etiqueta_y = (
-                    "Distancia recorrida (km)"
-                )
+        if "preferred_foot" in df.columns:
 
-            else:
-
-                titulo = (
-                    "Velocidad máxima según posición"
-                )
-
-                etiqueta_y = (
-                    "Velocidad máxima (km/h)"
-                )
-
-            ax.set_title(
-                titulo
+            pie_mas_frecuente = (
+                df["preferred_foot"]
+                .value_counts()
             )
 
-            ax.set_xlabel(
-                "Posición"
+            pie_principal = (
+                pie_mas_frecuente.index[0]
             )
 
-            ax.set_ylabel(
-                etiqueta_y
+            cantidad_pie = (
+                pie_mas_frecuente.iloc[0]
             )
 
-            plt.xticks(
-                rotation=45
+            porcentaje_pie = (
+                cantidad_pie /
+                len(df) *
+                100
             )
 
-            plt.tight_layout()
-
-            st.pyplot(fig)
-
-            plt.close()
-
-            if variable_fisica == "distance_covered_km":
-
-                st.markdown(
-                    """
-                    **Interpretación:**
-
-                    La distancia recorrida permite comparar el esfuerzo
-                    físico realizado por jugadores de diferentes
-                    posiciones.
-
-                    Las diferencias entre las medianas pueden indicar
-                    que determinadas posiciones recorren mayores
-                    distancias durante los partidos. La dispersión
-                    permite observar la variabilidad existente dentro
-                    de cada posición.
-                    """
-                )
-
-            else:
-
-                st.markdown(
-                    """
-                    **Interpretación:**
-
-                    La velocidad máxima permite comparar las capacidades
-                    de desplazamiento de los jugadores según su posición.
-
-                    Las posiciones con valores centrales más elevados
-                    presentan mayores velocidades máximas. La dispersión
-                    permite observar si el comportamiento es homogéneo
-                    o si existen jugadores con valores particularmente
-                    altos o bajos.
-                    """
-                )
-
-        else:
-
-            st.error(
-                "No se encontraron las variables necesarias."
+            st.write(
+                f"El pie preferido más frecuente es "
+                f"**{pie_principal}**, presente en aproximadamente "
+                f"el **{porcentaje_pie:.2f}%** de los registros."
             )
+
+        # ----------------------------------------------------
+        # RESUMEN VISUAL
+        # ----------------------------------------------------
 
         st.markdown("---")
 
-        # ====================================================
-        # CONCLUSIÓN DEL ÍTEM 7
-        # ====================================================
-
         st.subheader(
-            "📌 Conclusión del análisis bivariado"
+            "📌 Resumen visual de indicadores"
         )
 
-        st.info(
-            "El análisis bivariado permite identificar diferencias "
-            "entre grupos de jugadores. En este caso se compararon "
-            "las valoraciones de rendimiento según posición, el "
-            "performance según el resultado del partido y variables "
-            "físicas según posición. Los boxplots permiten analizar "
-            "la mediana, dispersión y posibles valores extremos "
-            "de cada grupo."
+        resumen_visual = pd.DataFrame(
+            {
+                "Indicador": [
+                    "Registros",
+                    "Variables",
+                    "Valores faltantes",
+                    "Duplicados"
+                ],
+                "Valor": [
+                    filas,
+                    columnas,
+                    total_nulos,
+                    duplicados
+                ]
+            }
+        )
+
+        st.dataframe(
+            resumen_visual,
+            use_container_width=True,
+            hide_index=True
+        )
+
+        # ----------------------------------------------------
+        # RECOMENDACIONES
+        # ----------------------------------------------------
+
+        st.markdown("---")
+
+        st.subheader(
+            "🎯 Recomendaciones para la interpretación"
+        )
+
+        st.write(
+            """
+            **1. Analizar el rendimiento según posición:**  
+            Las diferencias observadas entre posiciones permiten
+            comprender que las métricas de rendimiento deben
+            interpretarse considerando la función que cumple cada
+            jugador dentro del campo.
+
+            **2. Considerar el contexto del partido:**  
+            El `performance_score` puede presentar diferencias
+            según el resultado del encuentro. Por ello, las
+            comparaciones deben considerar el contexto competitivo.
+
+            **3. Analizar las variables físicas por posición:**  
+            La distancia recorrida y la velocidad máxima pueden
+            comportarse de manera diferente según la posición.
+            No resulta adecuado interpretar estas variables sin
+            considerar las funciones específicas de cada jugador.
+
+            **4. Utilizar filtros para análisis específicos:**  
+            Los filtros desarrollados en el Ítem 9 permiten
+            seleccionar equipos, posiciones, etapas y resultados
+            para realizar comparaciones más específicas.
+
+            **5. Evitar conclusiones predictivas:**  
+            Los resultados obtenidos corresponden a un análisis
+            exploratorio. Estos hallazgos permiten describir y
+            comparar los datos, pero no constituyen predicciones
+            sobre resultados futuros.
+            """
+        )
+
+        st.success(
+            "✅ El EDA permite identificar patrones, diferencias "
+            "y características relevantes del rendimiento de los "
+            "jugadores sin construir modelos predictivos."
         )
 
 
