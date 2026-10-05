@@ -27,14 +27,10 @@ class DataAnalyzer:
         return self.df.shape
 
     def obtener_nulos(self):
-        return self.df.isnull().sum()
+        return self.df.isnull().sum().sum()
 
     def obtener_duplicados(self):
         return self.df.duplicated().sum()
-
-    # -----------------------------------------------------
-    # ÍTEM 2 - CLASIFICACIÓN DE VARIABLES
-    # -----------------------------------------------------
 
     def clasificar_variables(self):
 
@@ -48,17 +44,13 @@ class DataAnalyzer:
 
         return numericas, categoricas
 
-    # -----------------------------------------------------
-    # ÍTEM 3 - ESTADÍSTICAS DESCRIPTIVAS
-    # -----------------------------------------------------
-
     def estadisticas_descriptivas(self):
 
         return self.df.describe()
 
 
 # =========================================================
-# SESSION STATE
+# VARIABLES DE SESIÓN
 # =========================================================
 
 if "df" not in st.session_state:
@@ -69,14 +61,17 @@ if "df" not in st.session_state:
 # MENÚ LATERAL
 # =========================================================
 
-opcion = st.sidebar.radio(
-    "Selecciona un módulo:",
+st.sidebar.title("⚽ FIFA World Cup 2026")
+
+opcion = st.sidebar.selectbox(
+    "Selecciona una sección:",
     [
         "🏠 Home",
         "📂 Carga del dataset",
         "📊 Análisis Exploratorio (EDA)",
         "🧮 Clasificación de variables",
-        "📈 Estadísticas descriptivas"
+        "📈 Estadísticas descriptivas",
+        "⚠️ Análisis de valores faltantes"
     ]
 )
 
@@ -88,14 +83,11 @@ opcion = st.sidebar.radio(
 if opcion == "🏠 Home":
 
     st.title("⚽ FIFA World Cup 2026")
-
-    st.subheader(
-        "Análisis Exploratorio de Datos"
-    )
+    st.header("Análisis Exploratorio de Datos")
 
     st.write(
-        "Proyecto de análisis exploratorio del rendimiento "
-        "de jugadores durante la FIFA World Cup 2026."
+        "Proyecto desarrollado para la Especialización en "
+        "Python for Analytics."
     )
 
     st.markdown("---")
@@ -104,44 +96,51 @@ if opcion == "🏠 Home":
 
     with col1:
 
-        st.markdown("### 👤 Autor")
-        st.write("Sebastián Ccala")
+        st.subheader("👨‍🎓 Información del estudiante")
 
-        st.markdown("### 📚 Curso")
-        st.write("Especialización en Python for Analytics")
-
-        st.markdown("### 📅 Año")
-        st.write("2026")
+        st.write("**Estudiante:** Sebastián Ccala")
+        st.write("**Curso:** Especialización en Python for Analytics")
+        st.write("**Año:** 2026")
 
     with col2:
 
-        st.markdown("### 📊 Dataset")
-        st.write(
-            "FIFA World Cup 2026 Player Performance"
-        )
+        st.subheader("💻 Tecnologías utilizadas")
 
-        st.markdown("### 📌 Registros")
-        st.write("54,600")
-
-        st.markdown("### 📌 Variables")
-        st.write("75")
+        st.write("🐍 Python")
+        st.write("📊 Pandas")
+        st.write("🔢 NumPy")
+        st.write("🎨 Streamlit")
+        st.write("📈 Matplotlib / Seaborn")
 
     st.markdown("---")
 
-    st.markdown("### 🛠️ Tecnologías")
+    st.subheader("📋 Dataset")
 
-    st.write(
-        "Python, Streamlit, NumPy, Pandas, "
-        "Matplotlib y Seaborn"
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.metric(
+            "Registros",
+            "54,600"
+        )
+
+    with col2:
+        st.metric(
+            "Variables",
+            "75"
+        )
+
+    st.info(
+        "El proyecto tiene como objetivo realizar un análisis "
+        "exploratorio del desempeño de jugadores durante el "
+        "FIFA World Cup 2026."
     )
 
     st.markdown("---")
 
     st.caption(
-        "FIFA World Cup 2026 | "
-        "Análisis Exploratorio de Datos | "
-        "Python for Analytics | "
-        "Sebastián Ccala | 2026"
+        "FIFA World Cup 2026 | Análisis Exploratorio de Datos | "
+        "Python for Analytics | Sebastián Ccala | 2026"
     )
 
 
@@ -154,7 +153,7 @@ elif opcion == "📂 Carga del dataset":
     st.header("📂 Carga del dataset")
 
     st.write(
-        "Carga el archivo CSV para comenzar el análisis."
+        "Carga el archivo CSV para comenzar con el análisis."
     )
 
     archivo = st.file_uploader(
@@ -171,7 +170,7 @@ elif opcion == "📂 Carga del dataset":
             st.session_state.df = df
 
             st.success(
-                "✅ Archivo cargado correctamente."
+                "¡Dataset cargado correctamente!"
             )
 
             st.markdown("---")
@@ -181,29 +180,25 @@ elif opcion == "📂 Carga del dataset":
             with col1:
 
                 st.metric(
-                    "📊 Registros",
+                    "Registros",
                     f"{df.shape[0]:,}"
                 )
 
             with col2:
 
                 st.metric(
-                    "📁 Variables",
+                    "Variables",
                     df.shape[1]
                 )
 
             with col3:
 
                 st.metric(
-                    "⚠️ Valores nulos",
-                    int(df.isnull().sum().sum())
+                    "Valores nulos",
+                    f"{df.isnull().sum().sum():,}"
                 )
 
-            st.markdown("---")
-
-            st.subheader(
-                "👀 Primeros registros"
-            )
+            st.subheader("👀 Vista previa")
 
             st.dataframe(
                 df.head(10),
@@ -213,39 +208,28 @@ elif opcion == "📂 Carga del dataset":
         except Exception as e:
 
             st.error(
-                f"❌ Error al cargar el archivo: {e}"
+                f"Error al cargar el archivo: {e}"
             )
-
-    else:
-
-        st.info(
-            "📌 Debes cargar el archivo CSV para continuar."
-        )
 
 
 # =========================================================
-# ÍTEM 1 - ANÁLISIS EXPLORATORIO
+# ÍTEM 1: ANÁLISIS EXPLORATORIO
 # =========================================================
 
 elif opcion == "📊 Análisis Exploratorio (EDA)":
 
-    st.header(
-        "📊 Análisis Exploratorio de Datos"
-    )
-
     if st.session_state.df is None:
 
         st.warning(
-            "⚠️ Primero debes cargar el archivo desde "
-            "📂 Carga del dataset."
+            "Primero debes cargar el dataset."
         )
 
         st.stop()
 
     df = st.session_state.df
 
-    st.subheader(
-        "Ítem 1: Información general del dataset"
+    st.header(
+        "📊 Ítem 1: Información general del dataset"
     )
 
     tab1, tab2, tab3, tab4 = st.tabs(
@@ -257,14 +241,23 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
         ]
     )
 
-    # =====================================================
-    # TAB 1
-    # =====================================================
+
+    # -----------------------------------------------------
+    # TAB 1 - INFORMACIÓN GENERAL
+    # -----------------------------------------------------
 
     with tab1:
 
-        st.markdown(
-            "### 📋 Resumen general del dataset"
+        analizador = DataAnalyzer(df)
+
+        filas, columnas = analizador.obtener_dimensiones()
+
+        nulos = analizador.obtener_nulos()
+
+        duplicados = analizador.obtener_duplicados()
+
+        numericas, categoricas = (
+            analizador.clasificar_variables()
         )
 
         col1, col2, col3, col4 = st.columns(4)
@@ -272,70 +265,52 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
         with col1:
 
             st.metric(
-                "📊 Registros",
-                f"{df.shape[0]:,}"
+                "Registros",
+                f"{filas:,}"
             )
 
         with col2:
 
             st.metric(
-                "📁 Variables",
-                df.shape[1]
+                "Variables",
+                columnas
             )
 
         with col3:
 
-            total_nulos = int(
-                df.isnull().sum().sum()
-            )
-
             st.metric(
-                "⚠️ Valores nulos",
-                total_nulos
+                "Valores nulos",
+                f"{nulos:,}"
             )
 
         with col4:
 
-            total_duplicados = int(
-                df.duplicated().sum()
-            )
-
             st.metric(
-                "🔁 Duplicados",
-                total_duplicados
+                "Duplicados",
+                f"{duplicados:,}"
             )
 
         st.markdown("---")
-
-        numericas = df.select_dtypes(
-            include=np.number
-        ).shape[1]
-
-        categoricas = df.select_dtypes(
-            exclude=np.number
-        ).shape[1]
-
-        st.markdown(
-            "### 🔤 Clasificación de variables"
-        )
 
         col1, col2 = st.columns(2)
 
         with col1:
 
             st.metric(
-                "🔢 Variables numéricas",
-                numericas
+                "Variables numéricas",
+                len(numericas)
             )
 
         with col2:
 
             st.metric(
-                "🔤 Variables categóricas",
-                categoricas
+                "Variables categóricas",
+                len(categoricas)
             )
 
-        st.markdown("---")
+        st.subheader(
+            "📋 Resumen general"
+        )
 
         resumen = pd.DataFrame(
             {
@@ -347,14 +322,13 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
                     "Valores nulos",
                     "Registros duplicados"
                 ],
-
                 "Resultado": [
-                    f"{df.shape[0]:,}",
-                    df.shape[1],
-                    numericas,
-                    categoricas,
-                    total_nulos,
-                    total_duplicados
+                    filas,
+                    columnas,
+                    len(numericas),
+                    len(categoricas),
+                    nulos,
+                    duplicados
                 ]
             }
         )
@@ -366,33 +340,33 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
         )
 
 
-    # =====================================================
-    # TAB 2
-    # =====================================================
+    # -----------------------------------------------------
+    # TAB 2 - TIPOS DE DATOS
+    # -----------------------------------------------------
 
     with tab2:
 
-        st.markdown(
-            "### 🔤 Tipos de datos de las variables"
+        st.subheader(
+            "🔤 Tipos de datos de las variables"
         )
 
-        tipos = pd.DataFrame(
+        tipos_datos = pd.DataFrame(
             {
                 "N°": range(1, len(df.columns) + 1),
                 "Variable": df.columns,
-                "Tipo de dato": (
-                    df.dtypes.astype(str).values
-                )
+                "Tipo de dato": df.dtypes.astype(str).values
             }
         )
 
         st.dataframe(
-            tipos,
+            tipos_datos,
             use_container_width=True,
             hide_index=True
         )
 
-        st.markdown("---")
+        st.subheader(
+            "📊 Resumen de tipos de datos"
+        )
 
         resumen_tipos = (
             df.dtypes
@@ -403,7 +377,7 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
 
         resumen_tipos.columns = [
             "Tipo de dato",
-            "Cantidad de variables"
+            "Cantidad"
         ]
 
         st.dataframe(
@@ -413,119 +387,113 @@ elif opcion == "📊 Análisis Exploratorio (EDA)":
         )
 
 
-    # =====================================================
-    # TAB 3
-    # =====================================================
+    # -----------------------------------------------------
+    # TAB 3 - VALORES NULOS
+    # -----------------------------------------------------
 
     with tab3:
 
-        st.markdown(
-            "### ⚠️ Análisis de valores nulos"
+        st.subheader(
+            "⚠️ Análisis de valores nulos"
         )
 
-        total_nulos = int(
-            df.isnull().sum().sum()
+        nulos_por_variable = df.isnull().sum()
+
+        tabla_nulos = pd.DataFrame(
+            {
+                "Variable": df.columns,
+                "Valores nulos": nulos_por_variable.values,
+                "Porcentaje (%)":
+                    (
+                        nulos_por_variable /
+                        len(df) *
+                        100
+                    ).round(2)
+            }
         )
 
-        if total_nulos == 0:
+        if nulos_por_variable.sum() == 0:
 
             st.success(
-                "✅ El dataset no contiene valores nulos."
+                "El dataset no contiene valores nulos."
             )
 
         else:
 
             st.warning(
-                f"⚠️ El dataset contiene "
-                f"{total_nulos:,} valores nulos."
+                "Se encontraron valores nulos."
             )
 
-        st.markdown("---")
-
-        nulos = pd.DataFrame(
-            {
-                "Variable": df.columns,
-                "Valores nulos": (
-                    df.isnull().sum().values
-                )
-            }
-        )
-
-        nulos["Porcentaje nulos (%)"] = (
-            nulos["Valores nulos"]
-            / len(df)
-            * 100
-        ).round(2)
-
         st.dataframe(
-            nulos,
+            tabla_nulos,
             use_container_width=True,
             hide_index=True
         )
 
 
-    # =====================================================
-    # TAB 4
-    # =====================================================
+    # -----------------------------------------------------
+    # TAB 4 - DUPLICADOS
+    # -----------------------------------------------------
 
     with tab4:
 
-        st.markdown(
-            "### 🔁 Análisis de registros duplicados"
+        st.subheader(
+            "🔁 Análisis de registros duplicados"
         )
 
-        duplicados = int(
-            df.duplicated().sum()
-        )
+        cantidad_duplicados = df.duplicated().sum()
 
         st.metric(
             "Registros duplicados",
-            duplicados
+            f"{cantidad_duplicados:,}"
         )
 
-        if duplicados == 0:
+        if cantidad_duplicados == 0:
 
             st.success(
-                "✅ No existen registros duplicados."
+                "No existen registros duplicados."
             )
 
         else:
 
             st.warning(
-                f"⚠️ Se encontraron "
-                f"{duplicados:,} registros duplicados."
+                "Se encontraron registros duplicados."
             )
 
-            df_duplicados = df[
+            duplicados = df[
                 df.duplicated(keep=False)
             ]
 
             st.dataframe(
-                df_duplicados,
+                duplicados,
                 use_container_width=True
             )
 
 
 # =========================================================
-# ÍTEM 2 - CLASIFICACIÓN DE VARIABLES
+# ÍTEM 2: CLASIFICACIÓN DE VARIABLES
 # =========================================================
 
 elif opcion == "🧮 Clasificación de variables":
 
-    st.header(
-        "🧮 Ítem 2: Clasificación de variables"
-    )
-
     if st.session_state.df is None:
 
         st.warning(
-            "⚠️ Primero debes cargar el archivo desde "
-            "📂 Carga del dataset."
+            "Primero debes cargar el dataset."
         )
 
         st.stop()
 
     df = st.session_state.df
+
+    st.header(
+        "🧮 Ítem 2: Clasificación de variables"
+    )
+
+    st.write(
+        "Las variables se clasifican en numéricas y categóricas "
+        "utilizando una función personalizada."
+    )
 
     analizador = DataAnalyzer(df)
 
@@ -533,175 +501,160 @@ elif opcion == "🧮 Clasificación de variables":
         analizador.clasificar_variables()
     )
 
-    cantidad_numericas = len(numericas)
-    cantidad_categoricas = len(categoricas)
-
-    st.write(
-        "Las variables del dataset se clasifican en "
-        "numéricas y categóricas mediante una función "
-        "personalizada."
-    )
-
-    st.markdown("---")
-
-    st.subheader(
-        "📊 Conteo de variables por tipo"
-    )
+    # -----------------------------------------------------
+    # RESUMEN
+    # -----------------------------------------------------
 
     col1, col2, col3 = st.columns(3)
 
     with col1:
 
         st.metric(
-            "🔢 Variables numéricas",
-            cantidad_numericas
+            "Variables numéricas",
+            len(numericas)
         )
 
     with col2:
 
         st.metric(
-            "🔤 Variables categóricas",
-            cantidad_categoricas
+            "Variables categóricas",
+            len(categoricas)
         )
 
     with col3:
 
         st.metric(
-            "📁 Total de variables",
-            cantidad_numericas
-            + cantidad_categoricas
+            "Total de variables",
+            len(df.columns)
         )
 
     st.markdown("---")
+
+    # -----------------------------------------------------
+    # TABLA RESUMEN
+    # -----------------------------------------------------
 
     st.subheader(
         "📋 Resumen de clasificación"
     )
 
-    resumen_clasificacion = pd.DataFrame(
+    resumen_variables = pd.DataFrame(
         {
             "Tipo de variable": [
                 "Numéricas",
                 "Categóricas"
             ],
-
             "Cantidad": [
-                cantidad_numericas,
-                cantidad_categoricas
+                len(numericas),
+                len(categoricas)
             ]
         }
     )
 
     st.dataframe(
-        resumen_clasificacion,
+        resumen_variables,
         use_container_width=True,
         hide_index=True
     )
 
-    st.markdown("---")
+    # -----------------------------------------------------
+    # VARIABLES NUMÉRICAS
+    # -----------------------------------------------------
 
     st.subheader(
         "🔢 Variables numéricas"
     )
 
-    df_numericas = pd.DataFrame(
+    tabla_numericas = pd.DataFrame(
         {
-            "N°": range(
-                1,
-                cantidad_numericas + 1
-            ),
-
+            "N°": range(1, len(numericas) + 1),
             "Variable": numericas
         }
     )
 
     st.dataframe(
-        df_numericas,
+        tabla_numericas,
         use_container_width=True,
         hide_index=True
     )
 
-    st.markdown("---")
+    # -----------------------------------------------------
+    # VARIABLES CATEGÓRICAS
+    # -----------------------------------------------------
 
     st.subheader(
         "🔤 Variables categóricas"
     )
 
-    df_categoricas = pd.DataFrame(
+    tabla_categoricas = pd.DataFrame(
         {
-            "N°": range(
-                1,
-                cantidad_categoricas + 1
-            ),
-
+            "N°": range(1, len(categoricas) + 1),
             "Variable": categoricas
         }
     )
 
     st.dataframe(
-        df_categoricas,
+        tabla_categoricas,
         use_container_width=True,
         hide_index=True
     )
 
 
 # =========================================================
-# ÍTEM 3 - ESTADÍSTICAS DESCRIPTIVAS
+# ÍTEM 3: ESTADÍSTICAS DESCRIPTIVAS
 # =========================================================
 
 elif opcion == "📈 Estadísticas descriptivas":
 
-    st.header(
-        "📈 Ítem 3: Estadísticas descriptivas"
-    )
-
     if st.session_state.df is None:
 
         st.warning(
-            "⚠️ Primero debes cargar el archivo desde "
-            "📂 Carga del dataset."
+            "Primero debes cargar el dataset."
         )
 
         st.stop()
 
     df = st.session_state.df
 
-    analizador = DataAnalyzer(df)
-
-    # -----------------------------------------------------
-    # OBTENER VARIABLES NUMÉRICAS
-    # -----------------------------------------------------
-
-    numericas, _ = analizador.clasificar_variables()
-
-    # -----------------------------------------------------
-    # USO DE .describe()
-    # -----------------------------------------------------
-
-    estadisticas = (
-        analizador.estadisticas_descriptivas()
-    )
-
-    st.subheader(
-        "📊 Estadísticas descriptivas del dataset"
+    st.header(
+        "📈 Ítem 3: Estadísticas descriptivas"
     )
 
     st.write(
-        "La función `.describe()` permite obtener "
-        "un resumen estadístico de las variables "
-        "numéricas del dataset."
+        "Se presentan las principales estadísticas descriptivas "
+        "de las variables numéricas."
+    )
+
+    analizador = DataAnalyzer(df)
+
+    numericas, categoricas = (
+        analizador.clasificar_variables()
+    )
+
+    # -----------------------------------------------------
+    # ESTADÍSTICAS GENERALES
+    # -----------------------------------------------------
+
+    st.subheader(
+        "📊 Estadísticas descriptivas generales"
+    )
+
+    estadisticas = (
+        analizador
+        .estadisticas_descriptivas()
+        .round(2)
     )
 
     st.dataframe(
-        estadisticas.round(2),
+        estadisticas,
         use_container_width=True
     )
 
     st.markdown("---")
 
-    # =====================================================
+    # -----------------------------------------------------
     # ANÁLISIS DE UNA VARIABLE
-    # =====================================================
+    # -----------------------------------------------------
 
     st.subheader(
         "🔎 Análisis detallado de una variable"
@@ -714,10 +667,6 @@ elif opcion == "📈 Estadísticas descriptivas":
 
     datos = df[variable].dropna()
 
-    # -----------------------------------------------------
-    # ESTADÍSTICAS
-    # -----------------------------------------------------
-
     media = datos.mean()
     mediana = datos.median()
     minimo = datos.min()
@@ -729,21 +678,17 @@ elif opcion == "📈 Estadísticas descriptivas":
 
     iqr = q3 - q1
 
-    limite_inferior = q1 - 1.5 * iqr
-    limite_superior = q3 + 1.5 * iqr
+    limite_inferior = q1 - (1.5 * iqr)
+    limite_superior = q3 + (1.5 * iqr)
 
     valores_extremos = datos[
-        (datos < limite_inferior)
-        | (datos > limite_superior)
+        (datos < limite_inferior) |
+        (datos > limite_superior)
     ]
 
-    # =====================================================
-    # MÉTRICAS
-    # =====================================================
-
-    st.markdown(
-        "### 📌 Medidas principales"
-    )
+    # -----------------------------------------------------
+    # MÉTRICAS PRINCIPALES
+    # -----------------------------------------------------
 
     col1, col2, col3, col4 = st.columns(4)
 
@@ -775,14 +720,12 @@ elif opcion == "📈 Estadísticas descriptivas":
             f"{maximo:.2f}"
         )
 
-    st.markdown("---")
+    # -----------------------------------------------------
+    # DISPERSIÓN
+    # -----------------------------------------------------
 
-    # =====================================================
-    # CUARTILES Y DISPERSIÓN
-    # =====================================================
-
-    st.markdown(
-        "### 📐 Cuartiles y dispersión"
+    st.subheader(
+        "📐 Medidas de dispersión"
     )
 
     col1, col2, col3, col4 = st.columns(4)
@@ -790,39 +733,37 @@ elif opcion == "📈 Estadísticas descriptivas":
     with col1:
 
         st.metric(
-            "Q1 (25%)",
-            f"{q1:.2f}"
+            "Desviación estándar",
+            f"{desviacion:.2f}"
         )
 
     with col2:
 
         st.metric(
-            "Q3 (75%)",
-            f"{q3:.2f}"
+            "Q1",
+            f"{q1:.2f}"
         )
 
     with col3:
 
         st.metric(
-            "Rango intercuartílico",
-            f"{iqr:.2f}"
+            "Q3",
+            f"{q3:.2f}"
         )
 
     with col4:
 
         st.metric(
-            "Desviación estándar",
-            f"{desviacion:.2f}"
+            "IQR",
+            f"{iqr:.2f}"
         )
 
-    st.markdown("---")
+    # -----------------------------------------------------
+    # VALORES EXTREMOS
+    # -----------------------------------------------------
 
-    # =====================================================
-    # DETECCIÓN DE VALORES EXTREMOS
-    # =====================================================
-
-    st.markdown(
-        "### ⚠️ Detección preliminar de valores extremos"
+    st.subheader(
+        "🚨 Detección preliminar de valores extremos"
     )
 
     col1, col2, col3 = st.columns(3)
@@ -845,22 +786,21 @@ elif opcion == "📈 Estadísticas descriptivas":
 
         st.metric(
             "Valores extremos",
-            len(valores_extremos)
+            f"{len(valores_extremos):,}"
         )
 
     if len(valores_extremos) == 0:
 
         st.success(
-            "✅ No se detectaron valores extremos "
+            "No se identificaron valores extremos "
             "mediante el criterio del rango intercuartílico."
         )
 
     else:
 
         st.warning(
-            f"⚠️ Se detectaron "
-            f"{len(valores_extremos):,} valores extremos "
-            f"de manera preliminar."
+            f"Se identificaron {len(valores_extremos):,} "
+            "posibles valores extremos."
         )
 
         st.dataframe(
@@ -870,11 +810,9 @@ elif opcion == "📈 Estadísticas descriptivas":
             use_container_width=True
         )
 
-    st.markdown("---")
-
-    # =====================================================
-    # INTERPRETACIÓN BÁSICA
-    # =====================================================
+    # -----------------------------------------------------
+    # INTERPRETACIÓN
+    # -----------------------------------------------------
 
     st.subheader(
         "📝 Interpretación básica"
@@ -882,33 +820,241 @@ elif opcion == "📈 Estadísticas descriptivas":
 
     if media > mediana:
 
-        interpretacion_central = (
-            "La media es mayor que la mediana, "
-            "lo que puede indicar una ligera "
-            "asimetría hacia valores altos."
+        interpretacion = (
+            "La media es mayor que la mediana, lo que puede indicar "
+            "una ligera concentración de valores hacia niveles altos."
         )
 
     elif media < mediana:
 
-        interpretacion_central = (
-            "La media es menor que la mediana, "
-            "lo que puede indicar una ligera "
-            "asimetría hacia valores bajos."
+        interpretacion = (
+            "La media es menor que la mediana, lo que puede indicar "
+            "una ligera concentración de valores hacia niveles bajos."
         )
 
     else:
 
-        interpretacion_central = (
-            "La media y la mediana son iguales "
-            "o muy similares, lo que sugiere una "
-            "distribución relativamente equilibrada."
+        interpretacion = (
+            "La media y la mediana son iguales o muy similares, "
+            "lo que indica una distribución relativamente equilibrada."
         )
 
     st.info(
-        f"**Media:** {media:.2f}\n\n"
-        f"**Mediana:** {mediana:.2f}\n\n"
-        f"**Q1:** {q1:.2f}\n\n"
-        f"**Q3:** {q3:.2f}\n\n"
-        f"**Desviación estándar:** {desviacion:.2f}\n\n"
-        f"**Interpretación:** {interpretacion_central}"
+        f"Para la variable **{variable}**, la media es "
+        f"**{media:.2f}** y la mediana es **{mediana:.2f}**. "
+        f"{interpretacion}"
     )
+
+
+# =========================================================
+# ÍTEM 4: ANÁLISIS DE VALORES FALTANTES
+# =========================================================
+
+elif opcion == "⚠️ Análisis de valores faltantes":
+
+    if st.session_state.df is None:
+
+        st.warning(
+            "Primero debes cargar el dataset."
+        )
+
+        st.stop()
+
+    df = st.session_state.df
+
+    st.header(
+        "⚠️ Ítem 4: Análisis de valores faltantes"
+    )
+
+    st.write(
+        "Se analiza la cantidad y el porcentaje de valores "
+        "faltantes presentes en cada variable del dataset."
+    )
+
+    # -----------------------------------------------------
+    # 1. CONTEO Y PORCENTAJE POR VARIABLE
+    # -----------------------------------------------------
+
+    st.subheader(
+        "1. Conteo y porcentaje por variable"
+    )
+
+    valores_faltantes = df.isnull().sum()
+
+    porcentaje_faltantes = (
+        valores_faltantes /
+        len(df)
+    ) * 100
+
+    tabla_faltantes = pd.DataFrame(
+        {
+            "Variable": df.columns,
+            "Valores faltantes":
+                valores_faltantes.values,
+            "Porcentaje (%)":
+                porcentaje_faltantes.values
+        }
+    )
+
+    tabla_faltantes[
+        "Porcentaje (%)"
+    ] = tabla_faltantes[
+        "Porcentaje (%)"
+    ].round(2)
+
+    # -----------------------------------------------------
+    # MÉTRICAS
+    # -----------------------------------------------------
+
+    total_faltantes = valores_faltantes.sum()
+
+    variables_con_faltantes = (
+        valores_faltantes > 0
+    ).sum()
+
+    porcentaje_total = (
+        total_faltantes /
+        df.size
+    ) * 100
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+
+        st.metric(
+            "Total de valores faltantes",
+            f"{total_faltantes:,}"
+        )
+
+    with col2:
+
+        st.metric(
+            "Variables con faltantes",
+            variables_con_faltantes
+        )
+
+    with col3:
+
+        st.metric(
+            "Porcentaje total",
+            f"{porcentaje_total:.2f}%"
+        )
+
+    st.dataframe(
+        tabla_faltantes,
+        use_container_width=True,
+        hide_index=True
+    )
+
+    # -----------------------------------------------------
+    # 2. VISUALIZACIÓN SIMPLE
+    # -----------------------------------------------------
+
+    st.subheader(
+        "2. Visualización de valores faltantes"
+    )
+
+    datos_grafico = tabla_faltantes[
+        tabla_faltantes[
+            "Valores faltantes"
+        ] > 0
+    ]
+
+    if datos_grafico.empty:
+
+        st.success(
+            "No se encontraron valores faltantes "
+            "en ninguna variable del dataset."
+        )
+
+    else:
+
+        st.bar_chart(
+            datos_grafico.set_index(
+                "Variable"
+            )[
+                "Valores faltantes"
+            ]
+        )
+
+    # -----------------------------------------------------
+    # 3. DISCUSIÓN SOBRE EL TRATAMIENTO
+    # -----------------------------------------------------
+
+    st.subheader(
+        "3. Discusión sobre el tratamiento"
+    )
+
+    if total_faltantes == 0:
+
+        st.info(
+            "El dataset no presenta valores faltantes. "
+            "Por lo tanto, no es necesario aplicar técnicas "
+            "de imputación ni eliminar registros. Se recomienda "
+            "conservar los datos tal como se encuentran para "
+            "los análisis posteriores."
+        )
+
+    else:
+
+        st.write(
+            "Cuando existen valores faltantes, se debe evaluar "
+            "su cantidad y el tipo de variable antes de "
+            "seleccionar una estrategia de tratamiento."
+        )
+
+        st.markdown(
+            """
+            **Principales alternativas de tratamiento:**
+
+            - **Imputación:** reemplazar los valores faltantes
+              utilizando la media, mediana o moda.
+
+            - **Eliminación:** eliminar registros cuando la
+              cantidad de datos faltantes sea considerable.
+
+            - **Conservación:** mantener los valores faltantes
+              cuando representan una ausencia válida de información.
+            """
+        )
+
+    # -----------------------------------------------------
+    # CONCLUSIÓN
+    # -----------------------------------------------------
+
+    st.subheader(
+        "📌 Conclusión"
+    )
+
+    if total_faltantes == 0:
+
+        st.success(
+            "El dataset contiene 54,600 registros y 75 variables, "
+            "sin valores faltantes. Por esta razón, no es necesario "
+            "realizar procesos de imputación o eliminación "
+            "relacionados con datos ausentes."
+        )
+
+    else:
+
+        st.warning(
+            f"Se identificaron {total_faltantes:,} valores "
+            "faltantes en el dataset. Se recomienda analizar "
+            "cada variable antes de aplicar una estrategia "
+            "de tratamiento."
+        )
+
+
+# =========================================================
+# PIE DE PÁGINA
+# =========================================================
+
+st.sidebar.markdown("---")
+
+st.sidebar.caption(
+    "FIFA World Cup 2026 | Análisis Exploratorio de Datos"
+)
+
+st.sidebar.caption(
+    "Python for Analytics | Sebastián Ccala | 2026"
+)
