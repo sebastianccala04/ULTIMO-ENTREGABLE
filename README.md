@@ -92,31 +92,3 @@ La aplicación permite:
 | NumPy      | Operaciones numéricas            |
 | Matplotlib | Visualización de datos           |
 | Seaborn    | Visualización estadística        |
-
----
-
-## 📁 Estructura del proyecto
-
-```text
-proyecto-python-fundamentals/
-│
-├── app.py
-├── libreria_funciones_proyecto1.py
-├── dataset.csv
-├── imagenesportada.png
-├── captura_eda.png
-├── captura_bivariado.png
-├── captura_filtros.png
-├── requirements.txt
-└── README.md
-
-## 🔗 Links relevantes
-
-* **Repositorio GitHub:**
-https://github.com/sebastianccala04/ULTIMO-ENTREGABLE
-* **Aplicación desplegada en Streamlit:**
-https://ultimoproyectodmc.streamlit.app/
-## 👨‍💻 Autor
-**Sebastián Ccala**
-Especialización en Python for Analytics
-2026
