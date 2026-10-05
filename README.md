@@ -110,12 +110,10 @@ proyecto-python-fundamentals/
 ## 🔗 Links relevantes
 
 * **Repositorio GitHub:**
-  
+https://github.com/sebastianccala04/ULTIMO-ENTREGABLE
 * **Aplicación desplegada en Streamlit:**
-  `URL_DE_TU_APP_STREAMLIT`
-
+https://ultimoproyectodmc.streamlit.app/
 ## 👨‍💻 Autor
-
 **Sebastián Ccala**
 Especialización en Python for Analytics
 2026
