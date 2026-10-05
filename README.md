@@ -24,8 +24,8 @@ El proyecto integra las siguientes herramientas y tecnologías:
 ## 🖥️ Capturas de la aplicación
 
 ### Página principal
+<img width="1297" height="786" alt="image" src="https://github.com/user-attachments/assets/1eef63b6-4a42-4309-8ee1-979dc15d7bee" />
 
-![Página principal](imagenesportada.png)
 
 ### Análisis exploratorio de datos
 
