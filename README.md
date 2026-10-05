@@ -33,42 +33,20 @@ El proyecto integra las siguientes herramientas y tecnologías:
 ### 1. Clonar el repositorio
 
 Clonar el repositorio desde GitHub:
-
-```bash
-git clone URL_DE_TU_REPOSITORIO
-```
+https://github.com/sebastianccala04/ULTIMO-ENTREGABLE
 
 Ingresar a la carpeta del proyecto:
-
-```bash
-cd proyecto-python-fundamentals
-```
+fifa_world_cup_2026_player_performance
 
 ### 2. Instalar las dependencias
 
-Instalar las librerías necesarias:
-
-```bash
-pip install streamlit pandas numpy matplotlib seaborn
-```
-
-También se puede utilizar el archivo `requirements.txt`:
-
-```bash
-pip install -r requirements.txt
-```
+Instalar las librerías necesarias
 
 ### 3. Ejecutar la aplicación
 
 Ejecutar el archivo principal de Streamlit:
-
-```bash
-streamlit run app.py
-```
-
+https://ultimoproyectodmc.streamlit.app/
 La aplicación se abrirá automáticamente en el navegador.
-
----
 
 ## 📊 Variables principales del dataset
 
@@ -86,31 +64,20 @@ El dataset contiene diferentes variables relacionadas con jugadores, equipos, po
 | `weight`           | Peso del jugador                                 |
 
 Estas variables permiten realizar análisis univariados, bivariados y análisis dinámicos mediante filtros seleccionados por el usuario.
-
----
-
 ## 🔎 Funcionalidades principales
 
 La aplicación permite:
 
-* 📋 Visualizar información general del dataset.
-* 🔍 Explorar las variables disponibles.
-* 📊 Realizar análisis estadístico de variables.
-* ⚽ Comparar `position` con `tournament_stage`.
-* 🏆 Analizar `team` frente a `match_result`.
-* 🦶 Comparar `preferred_foot` con `position`.
-* 🎛️ Seleccionar variables mediante `selectbox`.
-* 🔀 Seleccionar múltiples categorías mediante `multiselect`.
-* 📏 Filtrar variables numéricas mediante `slider`.
-* 🔎 Aplicar filtros por:
-
-  * `team`
-  * `position`
-  * `tournament_stage`
-  * `match_result`
-* 📈 Generar análisis de acuerdo con los parámetros seleccionados por el usuario.
-
----
+* Visualizar información general del dataset.
+* Explorar las variables disponibles.
+* Realizar análisis estadístico de variables.
+* Comparar `position` con `tournament_stage`.
+* Analizar `team` frente a `match_result`.
+* Comparar `preferred_foot` con `position`.
+* Seleccionar variables mediante `selectbox`.
+* Seleccionar múltiples categorías mediante `multiselect`.
+* Filtrar variables numéricas mediante `slider`.
+* Aplicar filtros por:
 
 ## 🛠️ Tecnologías utilizadas
 
@@ -139,31 +106,13 @@ proyecto-python-fundamentals/
 ├── captura_filtros.png
 ├── requirements.txt
 └── README.md
-```
-
----
 
 ## 🔗 Links relevantes
 
 * **Repositorio GitHub:**
-  `URL_DE_TU_REPOSITORIO`
-
+  
 * **Aplicación desplegada en Streamlit:**
   `URL_DE_TU_APP_STREAMLIT`
-
-* **Documentación de Python:**
-  https://docs.python.org/3/
-
-* **Documentación de Pandas:**
-  https://pandas.pydata.org/docs/
-
-* **Documentación de NumPy:**
-  https://numpy.org/doc/
-
-* **Documentación de Streamlit:**
-  https://docs.streamlit.io/
-
----
 
 ## 👨‍💻 Autor
 
