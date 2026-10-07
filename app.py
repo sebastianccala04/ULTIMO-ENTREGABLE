@@ -154,10 +154,7 @@ elif opcion == "📂 Carga del dataset":
         "de los jugadores y partidos."
     )
 
-    archivo = st.file_uploader(
-        "Carga el archivo CSV:",
-        type=["csv"]
-    )
+   df = pd.read_csv("datos/fifa_world_cup_2026.csv")
 
     if archivo is not None:
 
