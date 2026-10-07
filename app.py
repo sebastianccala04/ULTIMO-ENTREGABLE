@@ -185,23 +185,7 @@ elif opcion == "📂 Carga del dataset":
             "Valores faltantes",
             int(df.isnull().sum().sum())
         )
-
-    st.session_state.df = df
-
-            st.subheader("👀 Vista previa")
-
-            st.dataframe(
-                df_cargado.head(10),
-                use_container_width=True
-            )
-
-        except Exception as e:
-
-            st.error(
-                f"❌ Error al cargar el archivo: {e}"
-            )
-
-
+        
 # ============================================================
 # RESTO DE SECCIONES
 # ============================================================
