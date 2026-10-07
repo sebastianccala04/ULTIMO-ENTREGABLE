@@ -149,7 +149,7 @@ elif opcion == "📂 Carga del dataset":
 
     st.header("📂 Carga del dataset")
 
-    df = pd.read_csv("datos/fifa_world_cup_2026.csv")
+   df = pd.read_csv("datosfifa_world_cup_2026.csv")
 
     st.success("Dataset cargado correctamente.")
     st.dataframe(df.head())
