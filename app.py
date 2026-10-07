@@ -149,25 +149,42 @@ elif opcion == "📂 Carga del dataset":
 
     st.header("📂 Carga del dataset")
 
+    # Cargar automáticamente el dataset incluido en el proyecto
     df = pd.read_csv("datosfifa_world_cup_2026.csv")
+
+    # Guardar dataset en memoria
+    st.session_state.df = df
 
     st.success("✅ Dataset cargado correctamente.")
 
-    st.write("### Vista previa del dataset")
-    st.dataframe(df.head())
+    st.subheader("👀 Vista previa")
 
-    st.write("### Información del dataset")
+    st.dataframe(
+        df.head(10),
+        use_container_width=True
+    )
+
+    st.subheader("📊 Información general")
 
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.metric("Registros", f"{df.shape[0]:,}")
+        st.metric(
+            "Registros",
+            f"{df.shape[0]:,}"
+        )
 
     with col2:
-        st.metric("Variables", df.shape[1])
+        st.metric(
+            "Variables",
+            df.shape[1]
+        )
 
     with col3:
-        st.metric("Valores faltantes", int(df.isnull().sum().sum()))
+        st.metric(
+            "Valores faltantes",
+            int(df.isnull().sum().sum())
+        )
 
     st.session_state.df = df
 
